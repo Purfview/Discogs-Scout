@@ -1,7 +1,7 @@
 // ==UserScript==
 //
 // @name         Discogs Scout
-// @version      0.2
+// @version      0.2.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -46,6 +46,8 @@
 /*=========================  Version History  ==================================
 
 
+0.2.1   -    Added the update links and OPS.
+
 0.1     -    Initial alpha test release.
 
 
@@ -60,6 +62,11 @@ var public_sites = [
 ];
 
 var private_sites = [
+  {   'name': 'OPS',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAXVBMVEUAAAAoKCg1NTVhYWEsLCxkZGQwMDA6OjojIyNRUVFdXV1oaGhGRkZaWlpKSko9PT1XV1dCQkIICAgDAwM/Pz9qampUVFRtbW1OTk5ISEgdHR0YGBgRERENDQ0VFRX5PEquAAAAAXRSTlMAQObYZgAAAjFJREFUSMfVldnaqiAUhoEYHEFAUwG9/8vcyYJSGo73/x5+w2JVPIH+ANaagy3szjkfjP2ZNpt3rqowkT1r53luWd/R8K1jN18d0K6Z5hNsdR8rBuJY36Z5OvM4aPVvFRsqfOT5vf3AdOOmyHscEQ1jLfuE3i55d6QrrBr2lXW75NP82w86U+5DhubJsKxaKS3vzQthUyFAni59pubB7FUUhRyeMoa8qaAwDhkRou4wVOqsL1FHjkb4cgdqbNOqO44OkfcEORwDKh1rYIl5YE+z1uTJ4wifxQXg9vz18cN6nJFM+tAwjwgJjAadMMlVyVUGBQ6MK+DQhR1cosHtPHIE0F1EmeJKUrBFB2CEcwHAqKC6+hzxNGEEXFnwqaDAF4gIQAGhLISrL5C4spWFrQig3CTAh8I1gNJu6lshpMCzIHRkJMBeFpwGkk8R6SKa8IgrC/TqY4RXUEQSyh9Oga95Hug7GdGcRoqdqnzFkr0hMy4HUgpQqvMR765FiOa7nmb48/XmpfkQg0ziSnFkf+VxnRgxYA6VDHdg5alhn/nk1MnxUQ9LPwC1SLqJuhiyoUDPnw/3TySh0dlN4HUWG5mWDXlV0by4S63U2C3nPzVewcEWJUx3+0FPqsj5ldhW9i3OGlHkoaHZJ1rG+pQvnxTDm6l9h9Uc8uH9CfIrm6eCZsQw3qAPWNfd5hNtr2lc3puv72ig3cDa6bHcbegIfoTdvhn0C2uCd87vwUSsRf8//wCFDz848ofHvwAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://orpheus.network/torrents.php?artistname=%band%&groupname=%release%&filter_cat[1]=1',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
+      'matchRegex': /did not match anything/},
   {   'name': 'RED',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEUAAAAAAADu7vnLzOG9vszc3O6wsdNBQkvnAAArLDAaGh1dXWSen72HiKdub32FAAA3CR0mAAAAAXRSTlMAQObYZgAAARVJREFUKM9jAAOdnQulZh9igANrQTAogfG5BcWvBKn6FgpugPCZCqWDlIBAdaO4AliAXSpJ+flCqXlOKguLwAIbF6tuBBkhbmQlDeKzCKZaQgxdFiJ4AKRDLngiREDK9WEBUMBxcbggFEy2kgEZsfkgTEDWThxoqWByIUxA0kRQgYFZ0k0QDo5MdGDgFfdDCDzZ+ICBWy4dxPzRDyLLgNZwymYCWfIdHR9BLrk4gYFLfCGQJdHR0QhySaEAAyOQhgqAAFBA6pqpIkSLkKrtRKCAbApQAGQoUMDkIlBABiQABGCBxMEjwCmLLHBxAQO3JNAvIsCIqnME+WUDAxMoDgrAMQgKVWBk8k0UFDcACTAXCko+YAAA5BtcVzEnMFcAAAAASUVORK5CYII=',
       'searchUrl': 'https://redacted.ch/torrents.php?artistname=%band%&groupname=%release%&filter_cat[1]=1',
@@ -542,7 +549,7 @@ GM_config.init({
       $('#discogs_scout').contents().find('input#discogs_scout_field_cfg_iconsize').attr('size', '1');
 
       const modVersion = 'Discogs Scout v' + GM.info.script.version;
-      const modUrl = 'https://greasyfork.org/en/scripts/';    ///////////////////////////////////////////////////////////////////////////////////////////////////
+      const modUrl = 'https://greasyfork.org/en/scripts/439452-discogs-scout';
       $('#discogs_scout').contents().find('#discogs_scout_section_header_0').append($('<a href="'+modUrl+'" target ="_blank">'+modVersion+'</a>'));
       $('#discogs_scout').contents().find('#discogs_scout_section_header_0').find('a').css({
        'text-decoration': 'none',
