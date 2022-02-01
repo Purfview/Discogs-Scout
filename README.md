@@ -6,7 +6,7 @@ Alpha testing...
 
 ## Installing:
 
-[Press here to install](https://greasyfork.org/scripts/439452-discogs-scout/code/Discogs%20Scout.user.js)
+[Press here to install](https://greasyfork.org/en/scripts/439452-discogs-scout)
 
 ## Versioning:
 Follows a bastardization of the [semver](http://semver.org/) standard:
