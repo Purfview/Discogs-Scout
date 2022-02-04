@@ -1,9 +1,9 @@
-# Discogs-Scout:
+# Discogs Scout:
 
-Adds links to Discogs pages from various sites.
-Auto search for music on torrent and other sites.
-Does multi auto-search on Artist/Discography pages.
-Auto search local HDDs/filelists using Voidtools Everything search engine.
+Adds links to Discogs pages from various sites.    
+Auto search for music on torrent and other sites.    
+Does multi auto-search on Artist/Discography pages.    
+Auto search local HDDs/filelists using Voidtools Everything search engine.    
 
 Supports browsers: Firefox, Chrome, Opera, Safari, Waterfox, Brave, Pale Moon, Edge.    
 Supports: [Violentmonkey](https://violentmonkey.github.io/), [Tampermonkey](https://www.tampermonkey.net/), [Greasemonkey](https://www.greasespot.net/), [Greasemonkey v3](https://github.com/greasemonkey/greasemonkey/releases?after=4.0) & [Greasemonkey for Pale Moon](https://github.com/janekptacijarabaci/greasemonkey/releases).  
