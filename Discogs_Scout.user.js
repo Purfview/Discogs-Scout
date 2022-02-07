@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      1.4
+// @version      1.4.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -47,10 +47,12 @@
 //
 /*=========================  Version History  ==================================
 
+1.4.1   -    Tweak: JPop.
+
 1.4     -    Added: LiB, LiB-Req, JPop, JPop-Req.
              The settings tweak: If site has 'goToUrl' attribute then show its hostname instead of 'searchUrl'.
              New feature: 'Pre databases' section in the settings.
-             Addded preDBs: PREcBurns, PreDB.de, PreDB.me, PreDB.org, PreDB.pw, preFYP, PREovh, srrDB, xREL.
+             Added preDBs: PREcBurns, PreDB.de, PreDB.me, PreDB.org, PreDB.pw, preFYP, PREovh, srrDB, xREL.
 
 1.3     -    Fixed: "+" in band/release.
              Fixed: "&" in band/release.
@@ -222,8 +224,7 @@ var public_sites = [
 var private_sites = [
   {   'name': 'JPop',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEX+//9zhdCBkNWQnNwShcapt+y/vfQ/mNGap+Li3f4CbLRwrt6nq+fTzvygzubS6fVtDDNqAAABvklEQVQoz22RMWjUYBTHH1o8jkjDSzjJcEsS7qhQh+RDcVBwyHGQcwkakaqDtolWKThctZzSwSAEuzgdfGDHGvHg6pBaaJdeS48OLdzSQqGFmzvd3C59X3rd+t/+P773f/y/B1drtO44zjykzsehd+d8/4VbbQUJubN5OKlM6jgeNFa0HwOQXbeWTKKBqAYePu2DVAncT4ZpEylaAozE6oc3ZhzZOiIqEwMY8ayyfX/7ZWQQKNQBcp0Qze9h8Fw8udsmsBnq5jRv+hGBUo2At4tlznmwQzPaGmX871oPDznf37EpZOofSMmsvncBCke48AggXcJXx3yxGVsb4JUoVXqMM4eQP4jtn3C9UKXUrzjTAziOTOjfKH7OQNiT+81oXE7ymgBz2O1Jy81oLPc3r6YZuNd7//sXMxZnbxIQI7emr91+wow73NPSbIsS8iNGH6BjkdqNVhDNmDFD1BVr5T/UyiAJUGoBQLWDOPTWwjKBtdeoYibVmhJ3OF1B9ZvwSqRN9AlISx0cY7piRnrZAaGGT3sYs1F5285ArvUOM3UbYkLE1vwtxh48S9uXt24k63G8Xk8GMJS86pC+CH8ObniK6jHjur8AAAAASUVORK5CYII=',
-      'searchUrl': 'https://jpopsuki.eu/ajax.php?section=torrents&artistname=%band%&action=advanced&torrentname=%release%&filter_cat[1]=1&filter_cat[2]=1',
-      'goToUrl': 'https://jpopsuki.eu/torrents.php?searchstr=%band%+%release%',
+      'searchUrl': 'https://jpopsuki.eu/torrents.php?searchstr=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID|Lost your password/,
       'matchRegex': /did not match anything/,
       'bar': 2},
