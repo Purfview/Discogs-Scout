@@ -47,6 +47,11 @@
 //
 /*=========================  Version History  ==================================
 
+1.4     -    Added: LiB, LiB-Req, JPop, JPop-Req.
+             The settings tweak: If site has 'goToUrl' attribute then show its hostname instead of 'searchUrl'.
+             New feature: 'Pre databases' section in the settings.
+             Addded preDBs: PREcBurns, PreDB.de, PreDB.me, PreDB.org, PreDB.pw, preFYP, PREovh, srrDB, xREL.
+
 1.3     -    Fixed: "+" in band/release.
              Fixed: "&" in band/release.
 
@@ -215,6 +220,31 @@ var public_sites = [
 ];
 
 var private_sites = [
+  {   'name': 'JPop',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEX+//9zhdCBkNWQnNwShcapt+y/vfQ/mNGap+Li3f4CbLRwrt6nq+fTzvygzubS6fVtDDNqAAABvklEQVQoz22RMWjUYBTHH1o8jkjDSzjJcEsS7qhQh+RDcVBwyHGQcwkakaqDtolWKThctZzSwSAEuzgdfGDHGvHg6pBaaJdeS48OLdzSQqGFmzvd3C59X3rd+t/+P773f/y/B1drtO44zjykzsehd+d8/4VbbQUJubN5OKlM6jgeNFa0HwOQXbeWTKKBqAYePu2DVAncT4ZpEylaAozE6oc3ZhzZOiIqEwMY8ayyfX/7ZWQQKNQBcp0Qze9h8Fw8udsmsBnq5jRv+hGBUo2At4tlznmwQzPaGmX871oPDznf37EpZOofSMmsvncBCke48AggXcJXx3yxGVsb4JUoVXqMM4eQP4jtn3C9UKXUrzjTAziOTOjfKH7OQNiT+81oXE7ymgBz2O1Jy81oLPc3r6YZuNd7//sXMxZnbxIQI7emr91+wow73NPSbIsS8iNGH6BjkdqNVhDNmDFD1BVr5T/UyiAJUGoBQLWDOPTWwjKBtdeoYibVmhJ3OF1B9ZvwSqRN9AlISx0cY7piRnrZAaGGT3sYs1F5285ArvUOM3UbYkLE1vwtxh48S9uXt24k63G8Xk8GMJS86pC+CH8ObniK6jHjur8AAAAASUVORK5CYII=',
+      'searchUrl': 'https://jpopsuki.eu/ajax.php?section=torrents&artistname=%band%&action=advanced&torrentname=%release%&filter_cat[1]=1&filter_cat[2]=1',
+      'goToUrl': 'https://jpopsuki.eu/torrents.php?searchstr=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID|Lost your password/,
+      'matchRegex': /did not match anything/,
+      'bar': 2},
+  {   'name': 'JPop-Req',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEX+//9zhdCBkNWQnNwShcapt+y/vfQ/mNGap+Li3f4CbLRwrt6nq+fTzvygzubS6fVtDDNqAAABvklEQVQoz22RMWjUYBTHH1o8jkjDSzjJcEsS7qhQh+RDcVBwyHGQcwkakaqDtolWKThctZzSwSAEuzgdfGDHGvHg6pBaaJdeS48OLdzSQqGFmzvd3C59X3rd+t/+P773f/y/B1drtO44zjykzsehd+d8/4VbbQUJubN5OKlM6jgeNFa0HwOQXbeWTKKBqAYePu2DVAncT4ZpEylaAozE6oc3ZhzZOiIqEwMY8ayyfX/7ZWQQKNQBcp0Qze9h8Fw8udsmsBnq5jRv+hGBUo2At4tlznmwQzPaGmX871oPDznf37EpZOofSMmsvncBCke48AggXcJXx3yxGVsb4JUoVXqMM4eQP4jtn3C9UKXUrzjTAziOTOjfKH7OQNiT+81oXE7ymgBz2O1Jy81oLPc3r6YZuNd7//sXMxZnbxIQI7emr91+wow73NPSbIsS8iNGH6BjkdqNVhDNmDFD1BVr5T/UyiAJUGoBQLWDOPTWwjKBtdeoYibVmhJ3OF1B9ZvwSqRN9AlISx0cY7piRnrZAaGGT3sYs1F5285ArvUOM3UbYkLE1vwtxh48S9uXt24k63G8Xk8GMJS86pC+CH8ObniK6jHjur8AAAAASUVORK5CYII=',
+      'searchUrl': 'https://jpopsuki.eu/requests.php?search=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID|Lost your password/,
+      'matchRegex': /Nothing found!|>Yes<|Nichts gefunden!|Aucune requête trouvée!|Nada Encontrado!|Нет результатов!|何も見つかりませんでした/,
+      'bar': 2},
+  {   'name': 'LiB',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAALVBMVEUETZQETpwIU5zH2OgERpQcYqQoaqdOhLYPWpy3zuTm7fTc5vDS3ux+pMycutRGoswNAAAAgUlEQVQI12N4fNjYeLOxsTFDU5mG6lQltSIGhiYGpkkOTA0MAiwMTJcYGRkZGNoSGBgEBAQYVKqOOgiARFSKpwIpIEOkeKqDAFiqxpSRiZFRgIGleIaDiKMDI1BkaqhaUpgCg0r13NW31u4qYRBoi0hVBYkwsjCAACMDIxQwCEABAJy4Gxrz0bmsAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://libble.me/torrents.php?artistname=%band%&groupname=%release%&filter_cat[1]=1',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Keep me logged in.</,
+      'matchRegex': /did not match anything/,
+      'bar': 2},
+  {   'name': 'LiB-Req',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAALVBMVEUETZQETpwIU5zH2OgERpQcYqQoaqdOhLYPWpy3zuTm7fTc5vDS3ux+pMycutRGoswNAAAAgUlEQVQI12N4fNjYeLOxsTFDU5mG6lQltSIGhiYGpkkOTA0MAiwMTJcYGRkZGNoSGBgEBAQYVKqOOgiARFSKpwIpIEOkeKqDAFiqxpSRiZFRgIGleIaDiKMDI1BkaqhaUpgCg0r13NW31u4qYRBoi0hVBYkwsjCAACMDIxQwCEABAJy4Gxrz0bmsAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://libble.me/requests.php?submit=true&search=%band%+%release%&filter_cat[1]=1&releases[]=1&releases[]=3&releases[]=5&releases[]=7&releases[]=9&releases[]=11&releases[]=13&releases[]=14&releases[]=15&releases[]=16&releases[]=17&releases[]=18&releases[]=19&releases[]=21&formats[]=0&formats[]=1&formats[]=2&formats[]=3&formats[]=4&formats[]=5&formats[]=6&formats[]=7&formats[]=8&formats[]=9&formats[]=10&bitrates[]=0&bitrates[]=1&bitrates[]=2&bitrates[]=3&bitrates[]=4&bitrates[]=5&bitrates[]=6&bitrates[]=7&bitrates[]=8&media[]=0&media[]=1&media[]=2&media[]=3&media[]=4&media[]=5&media[]=6&media[]=7&media[]=8&media[]=9&media[]=10',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Keep me logged in.</,
+      'matchRegex': /Nothing found!/,
+      'bar': 2},
   {   'name': 'OPS',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAMAAAAPdrEwAAAAilBMVEUEGBPh5OPl5+fe4ODj5uXa3dzY29q3vbu9wsHR1dTGysnLz86xuLbV2Nd4g4DBxsXO0tGor66krKqCjImhqKass7GcpKKYoJ6HkI5yfXuUnJqMlZN9h4VaZ2QvQDyQmZZLWVYnOTQLHhno6uprd3RhbWo+TUpEU083R0MZKyZlcm9TYF1RX1sQIx5dR4NSAAADGUlEQVRYw+3R2ZaiMBSF4RNkFlEBB1TGOCHy/q/X3auac4ImCFW9+oqPS372ihEmk8lk8kn5G/wbTVX8lV4CR+Nf2DJMf3bCIm3djwbXOjh3n98+b3pv1S7tiviu+c7wFT0drqnwbTn2Kq435OGwFL/AGFWOHrr2AXdHHPz+RAeuDVDAQHnSqi1tEJ7DIAlxtYF4Mmj5gmx9MC0fsPxAG/bu60/V2RsthQ9uZ5T9Weo8mhOEfhzH/tEz9deXrIRelR+3fPbCyaHMfXz99ptc6OUTh3WY96/iScWadZ2hR31C29/tDB+2x6bxsQkdsem9kjIkMxG7itmZKruTrUHpvEebznLR7R7UeZ2uUh46OyJDMEtfS59CWywDUEgyFBiCx3uakZV4CNVtH4hjEkuSVkJrCi4gVeyIUBuNLI6p9YTYVfyJW+QtSCaNy4hqITZLab2NkOugRQNSPtWWQ27ScwREaC2Qq+R5JmuLNVmRGhSEfE65LUuTDfLmaNWAwp56e05kaeghS52Sp0c+9BGVtotsUCk84hJZ6llImF6DSmWRD9NCuSRbUGls6Qey1Jbqm5aSnlpa9lzIcvB0tCQWAZXr8P7kkrf0Z30upB4pQMGifEn5RpZWc2JtUAxypZDblGfSeEWtuyYgl8yJR3Utja0VWQcoBSlXqANSSeOLQ9wI7aTxVYjnEVHc3kLIgy26Sm9PaD1qY5CzF8TZkfI9PS4EQlqB3E3sl9mhtX8vTaF0qTyCysIUWEcUv3SFKTpgl91BJTFF3h6dQZQaYjbfE1BzDJEbIr8UDjAzREeqUlBLu1+Z2Qm1n5We0WFREkOfaNY1D/3WufozHLJuYPikhF7m7MUi8uPWxWuHURijFPpV+DFiM2dpWfbKwFdke0ZP+OTKRrAeKIHPasZmA5/lBeFyr1pnw9gJqmGYu8YG0INn3brBUJXBmP7h0U45SmGEnab3c/IbamCUYtE3rp2uqIDRckNTOdwRDo+T2lx7w00/RRV8W5lbOue4yvnqlBatqoQfKtPLPtps1oc4L6q/mrKEyWQymfxPvwD+85sNy6/EZQAAAABJRU5ErkJggg==',
       'searchUrl': 'https://orpheus.network/torrents.php?searchstr=%band%+%release%&filter_cat[1]=1',
@@ -250,7 +280,64 @@ var other_sites = [
       'bar': 3}
 ];
 
-var sites = public_sites.concat(private_sites, other_sites);
+var pre_databases = [
+  {   'name': 'PREcBurns',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAADsSURBVHja3NhbFoMwCEVR5j9p+ltr4B7Io0v1L6nslGSZoLntve0IIK/kefWY+hUcZg8o5qIKNNLNgfaMCiBeWKNrjPzGs2GDDJ4xKVALHiLhHIjgcR8D0vAqdSMiAch0auIKlEYPCA7c2ynxDYDxk1bXAF05JJ1XpTR+Z4v5DvgLAfVyyHoXAF4D1ox/GtD/dwog6ZwA2GwtALwH2JLwzwfsr4BtAhovC3KEgTtaG4i2TJtIUbwn2wogP1UAgvUiwMoAOdnhs2kb2H66PlAfVCocr1c40zWa8yrT91aZR+rkA5U+Qdi3ip33ZwAb5/CcnuFpKAAAAABJRU5ErkJggg==',
+      'searchUrl': 'http://pre.c-burns.co.uk/pre.php?searchtext=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': />: 0</,
+      'bar': 3},
+  {   'name': 'PreDB.de',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAB/lBMVEUAAABT8vIv4eE36upM9PMu4uIb2NhH8vFO9/c26uoi3d1c/v0Bycpf//1W+/kv5OQg29sKzs9f//8Hy8sW09M47e0S09MIzs8e2dlc//5B7e0u4+NT+fgJzc4IzMwLzc446Ogh29sGy8s45+c/7u4Ezc094+NS/PwY19gEzM0Ey8xP+voj3NwByMhL9vU76upa/fxb/v5D8PBM9vU/6+sBx8g06elU+fgCycou4+MDysoU0tMt4eFc/f0DzMwc19cw4+Mm398AyMhg//1G7+9P9fM+7e1Y/Pth//8AyMpH8vI55+cKy8sAyck65uZa//8n3NxJ8fET09Mp4eEo4eEw5+cS1NQz5OQMzc8c19dD7u5D7u0v4uIV09NZ+/sV0tI76ek76ekz5uZP9vUz5eVV+vks4eEg2to/6+sg2tpS9/cOzc9W+voPz89G8PA56OhH8PA46ekw4+MCysow4+MX1tZQ9vZS9vYJy8sFyclX+Pgo3t4k29sg2dkc19cY1dVZ/PsV09NW+vkS0dEt6ekt6Ohg//9b/v1U+PdR9/ZM9PQOz9AJ0NBF8fEX2ttc//8t5uYKzs5Z//9J+flK8vIz8fAi4eECyso88fFV//9V/fxQ/fw+9vZB9PRD7u4/7e0l5uYp5eUd4OAd29sP19cP1NQL1NQS09MH0NAu6ur6PYxoAAAAe3RSTlMAAqIFs5A3LBEO/vaGhIN3TiopIgz+8eXgz56QiIeDZV5eXVo7FxL++/v49fX18/Py7Orp6enj2da4sq+mnZuain1vbW1nZl1PT0E2MCcjIh0aFPv6+ff23drY2MO+uLaxsK6spaKioJuZlpSPioaGhX9vaWVXVlRUNCNdm1MpAAACAklEQVQ4y5XOZXfaUADG8YeFUZzhULyFuru7ezt3d3f3jm0s+JC6y77lkuwm0J6+2e/NPfmfm+TB/6DGh3uUyp7hcQoH0SqbUqny+vryVKpJqcV++o7ikpanr30Gg2/M1VJS3KHHHnnmXUdW0jt3zXnIEDlpms4OeBWlaacIPMd2NEqbfRDMnKKj0W0HCNfWL8bmXQjub7Jly0Xmm3a+sk5IQIyZuLBj0nIDWkOfOaHzFJl0kS+t7AxJ0Uci5AHneYgvRexHO9c/EBuWGTBkpzf4st4JGCzy97zkzSOM20khyC0GSOTvMpKrZWWryawgl8Cz9jbjWPfUVPfRrLDmgebPN14k0gbGjUhklojMatB1vO0QcS7xBIxniebDLJvN1pzoguakDERBwxX2uNZQAMKb0MBtzAEv3/hwYuKxMR+8kbQbo+nMs+jyYmXl4iUReO70KGR1uRAMLK2sLA1AcKtOBuTWSEFIzwaXl4NnhAmyGvZlb7wPxKN4kBF/AKIv7mV/LK6dBienIvCbEaggs6drxSKul14Vgbu5EOAs/OuUuJTc7J+zs8fLwp9E4Qv2/p25fhD22D0K0sb5H8R8oxTS6zE7BOrwhTfq2BdBTD1iDauRZbC6qupTtnD1IPaYbFf4w9+JsF/RPon9dCqrws9RWFU6HITSDfWqVL1DOgoZfwGRBc1hlSSjOgAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://predb.de/search.php?t=pre&s=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID|experiencing some problems/,
+      'matchRegex': /itemListElement/,
+      'positiveMatch': true,
+      'bar': 3},
+  {   'name': 'PreDB.me',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAACVBMVEUAAAAAGDC6urrej6pEAAAAAXRSTlMAQObYZgAAACBJREFUCNdjQAOhQMCQtTRrKUMmEMAIKBdBgJVAFKMCAKceEPrGnb57AAAAAElFTkSuQmCC',
+      'loggedOutRegex': /Ray ID|security check to access|seconds to search again/,
+      'searchUrl': 'https://predb.me/?search=%band%+%release%&cats=music-audio',
+      'matchRegex': /Nothing found.../,
+      'bar': 3},
+  {   'name': 'PreDB.org',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAnFBMVEX/iAD/iAD/gAD+iAD/iAD/////uWj/58v/5MX/8+X/0p7/vXH/r1P/pDz/iQL//fv/+vT/+O//69T/3rf/16n/0Zv/oDT/mib/9en/7tr/6tH/3LP/1aX/wXr/sVj/rE3/nS3/lyD/khb/jw//8N7+4L7/yYv/x4f/rU//qkj+2a7/2K3/0qD+zpX/y5H/yYz/xoX/s13/lRz/jgzyD/i6AAAABHRSTlPmfAJ8dum23wAAANtJREFUOMvUjTeywkAQRBfoWa2T995hv8Xc/24gUUWGcl4wwfSrbrZeMbyFbdZsg0VWjGGRKV/mQwQ7FMLfXV+fsRKROOI3tGRg5gZfQ9MBL2qBik7cc2xynUnYGuxJR31co1FnjVqhpci46KicG4pMSO54+9g/UpMUzeEHhsqWvqRvz4J1GgDkKY/1lnOeqAh/9N9m6N38KVyAx02A0VJxdSuDzvNSk42dG0zCINUkBByAk/YYcll8J+BWuAvnifv4IG7nFR/McTGqAAQIZz1GQpmXiRlf9mdkAgCu2xnljMbIfgAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://predb.org/search/%band%+%release%/all',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /No results found/,
+      'bar': 3},
+  {   'name': 'PreDB.pw',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAFklEQVQI12NQUmfo6MdHdq1nUP8PJwENVw0h7PKMxQAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://predb.pw/search.php?search=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /<tbody><\/tbody>/,
+      'bar': 3},
+  {   'name': 'preFYP',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAgMAAAAOFJJnAAAACXBIWXMAABLIAAASyAH7Hi3CAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAMUExURQAAAAAAAAAAANHR0dBVfo0AAAACdFJOU/3+jYSN0wAAAE9JREFUGNNj+LsKDOoZfkEY6xleQRirGV79B4PVDK8hjNcMr8GK1gMZQCGgEuyMf6twMvDo+rOKMOMvlAF2IskMuONh3oF7EO5leCDAggUAEyPMhg3uaZgAAAAASUVORK5CYII=',
+      'searchUrl': 'https://pre.fyp.nl/search.html',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /Sorry, no results/,
+      'mPOST': 'input-Search=%band%+%release%&submit-Search=',
+      'bar': 3},
+  {   'name': 'PREovh',
+      'searchUrl': 'https://predb.ovh/api/v1/?q=%band%+%release%',
+      'goToUrl': 'https://predb.ovh/?q=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /total": 0/,
+      'bar': 3},
+  {   'name': 'srrDB',
+      'searchUrl': 'https://api.srrdb.com/v1/search/%band%/%release%',
+      'goToUrl': 'https://www.srrdb.com/browse/%band%/%release%',
+      'matchRegex': /resultsCount":"0/,
+      'spaceEncode': '/',
+      'bar': 3},
+  {   'name': 'xREL',
+      'searchUrl': 'https://www.xrel.to/search.html?xrel_search_query=%band%+%release%&lang=en_US',
+      'matchRegex': /not return any results/,
+      'bar': 3}
+];
+
+var sites = public_sites.concat(private_sites, other_sites, pre_databases);
 
 //==============================================================================
 //    Replace Search URL parameters
@@ -266,7 +353,7 @@ async function replaceSearchUrlParams(site, band, release, mPOSTsearch) {
   var band    =    band.trim().replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/\s+/g, space_replace);
   var release = release.trim().replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/\s+/g, space_replace);
   var s = search_url.replace(/%band%/g, band)
-                      .replace(/%release%/g, release);
+                    .replace(/%release%/g, release);
   return s;
 }
 
@@ -792,7 +879,15 @@ $.each(other_sites, function(index, site) {
   config_fields['show_' + site['name']] = {
     'section': (index == 0) ? ['Other sites/tools:'] : '',
     'type': 'checkbox',
-    'label': ' ' + site['name'] + (site['TV'] ? ' (TV)' : '')
+    'label': ' ' + site['name']
+  };
+});
+
+$.each(pre_databases, function(index, site) {
+  config_fields['show_' + site['name']] = {
+    'section': (index == 0) ? ['Pre databases:'] : '',
+    'type': 'checkbox',
+    'label': ' ' + site['name']
   };
 });
 
@@ -805,7 +900,7 @@ GM_config.init({
   'title': 'Discogs Scout Settings',
   'fields': config_fields,
   'css': `#discogs_scout_section_header_1, #discogs_scout_section_header_2, #discogs_scout_section_header_3, \
-          #discogs_scout_section_header_4 { \
+          #discogs_scout_section_header_4, #discogs_scout_section_header_5 { \
              background:   #00ab00 !important; \
              color:          black !important; \
              font-weight:     bold !important; \
@@ -861,28 +956,34 @@ GM_config.init({
       });
 
       $('#discogs_scout').contents().find('#discogs_scout_section_1').find('.field_label').each(function(index, label) {
-        var url = new URL(icon_sites[index].searchUrl);
+        var url = (icon_sites[index].goToUrl) ? new URL(icon_sites[index].goToUrl) : new URL(icon_sites[index].searchUrl);
         $(label).append(' ' + '<a class="grey_link" target="_blank" rel="noreferrer" style="color: gray; text-decoration : none" href="' + url.origin + '">'
                         + (/www./.test(url.hostname) ? url.hostname.match(/www.(.*)/)[1] : url.hostname) + '</a>');
         $(label).prepend(getFavicon(icon_sites[index], true));
       });
       $('#discogs_scout').contents().find('#discogs_scout_section_2').find('.field_label').each(function(index, label) {
-        var url = new URL(public_sites[index].searchUrl);
+        var url = (public_sites[index].goToUrl) ? new URL(public_sites[index].goToUrl) : new URL(public_sites[index].searchUrl);
         $(label).append(' ' + '<a class="grey_link" target="_blank" rel="noreferrer" style="color: gray; text-decoration : none" href="' + url.origin + '">'
                         + (/www./.test(url.hostname) ? url.hostname.match(/www.(.*)/)[1] : url.hostname) + '</a>');
         $(label).prepend(getFavicon(public_sites[index], true));
       });
       $('#discogs_scout').contents().find('#discogs_scout_section_3').find('.field_label').each(function(index, label) {
-        var url = new URL(private_sites[index].searchUrl);
+        var url = (private_sites[index].goToUrl) ? new URL(private_sites[index].goToUrl) : new URL(private_sites[index].searchUrl);
         $(label).append(' ' + '<a class="grey_link" target="_blank" rel="noreferrer" style="color: gray; text-decoration : none" href="' + url.origin + '">'
                         + (/www./.test(url.hostname) ? url.hostname.match(/www.(.*)/)[1] : url.hostname) + '</a>');
         $(label).prepend(getFavicon(private_sites[index], true));
       });
       $('#discogs_scout').contents().find('#discogs_scout_section_4').find('.field_label').each(function(index, label) {
-        var url = new URL(other_sites[index].searchUrl);
+        var url = (other_sites[index].goToUrl) ? new URL(other_sites[index].goToUrl) : new URL(other_sites[index].searchUrl);
         $(label).append(' ' + '<a class="grey_link" target="_blank" rel="noreferrer" style="color: gray; text-decoration : none" href="' + url.origin + '">'
                         + (/www./.test(url.hostname) ? url.hostname.match(/www.(.*)/)[1] : url.hostname) + '</a>');
         $(label).prepend(getFavicon(other_sites[index], true));
+      });
+      $('#discogs_scout').contents().find('#discogs_scout_section_5').find('.field_label').each(function(index, label) {
+        var url = (pre_databases[index].goToUrl) ? new URL(pre_databases[index].goToUrl) : new URL(pre_databases[index].searchUrl);
+        $(label).append(' ' + '<a class="grey_link" target="_blank" rel="noreferrer" style="color: gray; text-decoration : none" href="' + url.origin + '">'
+                        + (/www./.test(url.hostname) ? url.hostname.match(/www.(.*)/)[1] : url.hostname) + '</a>');
+        $(label).prepend(getFavicon(pre_databases[index], true));
       });
 
       $('#discogs_scout').contents().find("img").css({"margin-right": "4px", "width": GM_config.get('cfg_iconsize'), "height": GM_config.get('cfg_iconsize')});
