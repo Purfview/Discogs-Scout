@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      1.4.1
+// @version      1.5
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -47,6 +47,12 @@
 //
 /*=========================  Version History  ==================================
 
+1.5     -    Added: KG-Release.
+             Removed: preFYP.
+             Fix to keep the bars order consistent.
+             Remove text in brackets from %release% names.
+             New attribute 'replaceSpecials' to remove non-latin and special characters.
+
 1.4.1   -    Tweak: JPop.
 
 1.4     -    Added: LiB, LiB-Req, JPop, JPop-Req.
@@ -79,6 +85,75 @@
 0.1     -    Initial alpha test release.
 
 ==============================================================================*/
+
+
+//==============================================================================
+//    A list of all the sites.
+//==============================================================================
+/*
+    -= Each site is a dictionary with the following attributes: =-
+
+#  'name':
+The site name, full or abbreviated, must be unique.
+
+#  'icon' (optional):
+Icon for the site. If not defined then script looks at homesite/favicon.ico.
+Can be URL or Base64 string (www.base64-image.de).
+
+#  'searchUrl':
+The URL to perform the search against, see below for how to tailor the string to a site.
+
+#  'matchRegex':
+The string which appears if the searchUrl *doesn't* return a result.
+
+#  'bar':
+1,2 or 3 integer. Places site at 1st, 2nd or 3rd bar element.
+
+#  'positiveMatch' (optional):
+Changes the test to return true if the searchUrl *does* return a result that matches matchRegex.
+
+#  'SpaceEncode' (optional):
+Changes the character used to encode spaces in band/release names. Default is '+'.
+
+#  'replaceSpecials' (optional):
+Remove non latin and special characters in band/release names.
+
+#  'goToUrl' (optional):
+Most of the time the same URLs that are used for checking are the ones that
+are used to actually get to the movie, but this allows overriding that.
+
+#  'loggedOutRegex' (optional):
+If any text on the page matches this regex, the site is treated as being logged out,
+rather than mising the movie. This option is not effected by positiveMatch.
+
+#  'rateLimit' (optional):
+Connection rate limit in milliseconds. Default is 500.
+On the Artist/List pages if rateLimit<=1000 then it will be increased by a factor of 4.
+
+#  'mPOST':
+HTTP request by POST method. For the sites that doesn't support GET.
+Right mouse click won't submit such request.
+Atm 'goToUrl' not supported with it.
+Examples (3 types of formating):
+'cat1=4&cat2=6&filter=%tt%'
+'{"cat1":4,"cat2":6,"filter":"all=%band%+%release%&sort=date"}'
+'{key:"cat",value:"4"},{key:"cat",value:"6"},{key:"filter",value:"%band%+%release%"}'  // (supports duplicate keys)
+
+#  'ignore404' (optional):
+Ignores all 4** HTTP errors.
+
+#  'ignoreEmpty' (optional):
+Use it if an empty response means that no results found, otherwise by default it means 'logged_out'.
+
+    -=  Search URL parameters: =-
+
+#  %band%:
+Band's name.
+
+#  %release%:
+Album/EP/Single name.
+
+*/
 
 var icon_sites = [
   {   'name': 'AllMusic',
@@ -234,6 +309,12 @@ var private_sites = [
       'loggedOutRegex': /Cloudflare|Ray ID|Lost your password/,
       'matchRegex': /Nothing found!|>Yes<|Nichts gefunden!|Aucune requête trouvée!|Nada Encontrado!|Нет результатов!|何も見つかりませんでした/,
       'bar': 2},
+  {   'name': 'KG-Release',
+      'icon': 'data:image/png;base64,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',
+      'searchUrl': 'https://karagarga.in/browse.php?search="%release%"&search_type=title&cat=2',
+      'loggedOutRegex': /Cloudflare|Ray ID|Not logged in!/,
+      'matchRegex': /No torrents found/,
+      'bar': 2},
   {   'name': 'LiB',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAALVBMVEUETZQETpwIU5zH2OgERpQcYqQoaqdOhLYPWpy3zuTm7fTc5vDS3ux+pMycutRGoswNAAAAgUlEQVQI12N4fNjYeLOxsTFDU5mG6lQltSIGhiYGpkkOTA0MAiwMTJcYGRkZGNoSGBgEBAQYVKqOOgiARFSKpwIpIEOkeKqDAFiqxpSRiZFRgIGleIaDiKMDI1BkaqhaUpgCg0r13NW31u4qYRBoi0hVBYkwsjCAACMDIxQwCEABAJy4Gxrz0bmsAAAAAElFTkSuQmCC',
       'searchUrl': 'https://libble.me/torrents.php?artistname=%band%&groupname=%release%&filter_cat[1]=1',
@@ -278,6 +359,7 @@ var other_sites = [
       'searchUrl': 'http://localhost:8080/?search=%band%+%release%',
       'loggedOutRegex': /invalid request/,
       'matchRegex': />0 results</,
+      'replaceSpecials': true,
       'bar': 3}
 ];
 
@@ -287,6 +369,7 @@ var pre_databases = [
       'searchUrl': 'http://pre.c-burns.co.uk/pre.php?searchtext=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': />: 0</,
+      'replaceSpecials': true,
       'bar': 3},
   {   'name': 'PreDB.de',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAB/lBMVEUAAABT8vIv4eE36upM9PMu4uIb2NhH8vFO9/c26uoi3d1c/v0Bycpf//1W+/kv5OQg29sKzs9f//8Hy8sW09M47e0S09MIzs8e2dlc//5B7e0u4+NT+fgJzc4IzMwLzc446Ogh29sGy8s45+c/7u4Ezc094+NS/PwY19gEzM0Ey8xP+voj3NwByMhL9vU76upa/fxb/v5D8PBM9vU/6+sBx8g06elU+fgCycou4+MDysoU0tMt4eFc/f0DzMwc19cw4+Mm398AyMhg//1G7+9P9fM+7e1Y/Pth//8AyMpH8vI55+cKy8sAyck65uZa//8n3NxJ8fET09Mp4eEo4eEw5+cS1NQz5OQMzc8c19dD7u5D7u0v4uIV09NZ+/sV0tI76ek76ekz5uZP9vUz5eVV+vks4eEg2to/6+sg2tpS9/cOzc9W+voPz89G8PA56OhH8PA46ekw4+MCysow4+MX1tZQ9vZS9vYJy8sFyclX+Pgo3t4k29sg2dkc19cY1dVZ/PsV09NW+vkS0dEt6ekt6Ohg//9b/v1U+PdR9/ZM9PQOz9AJ0NBF8fEX2ttc//8t5uYKzs5Z//9J+flK8vIz8fAi4eECyso88fFV//9V/fxQ/fw+9vZB9PRD7u4/7e0l5uYp5eUd4OAd29sP19cP1NQL1NQS09MH0NAu6ur6PYxoAAAAe3RSTlMAAqIFs5A3LBEO/vaGhIN3TiopIgz+8eXgz56QiIeDZV5eXVo7FxL++/v49fX18/Py7Orp6enj2da4sq+mnZuain1vbW1nZl1PT0E2MCcjIh0aFPv6+ff23drY2MO+uLaxsK6spaKioJuZlpSPioaGhX9vaWVXVlRUNCNdm1MpAAACAklEQVQ4y5XOZXfaUADG8YeFUZzhULyFuru7ezt3d3f3jm0s+JC6y77lkuwm0J6+2e/NPfmfm+TB/6DGh3uUyp7hcQoH0SqbUqny+vryVKpJqcV++o7ikpanr30Gg2/M1VJS3KHHHnnmXUdW0jt3zXnIEDlpms4OeBWlaacIPMd2NEqbfRDMnKKj0W0HCNfWL8bmXQjub7Jly0Xmm3a+sk5IQIyZuLBj0nIDWkOfOaHzFJl0kS+t7AxJ0Uci5AHneYgvRexHO9c/EBuWGTBkpzf4st4JGCzy97zkzSOM20khyC0GSOTvMpKrZWWryawgl8Cz9jbjWPfUVPfRrLDmgebPN14k0gbGjUhklojMatB1vO0QcS7xBIxniebDLJvN1pzoguakDERBwxX2uNZQAMKb0MBtzAEv3/hwYuKxMR+8kbQbo+nMs+jyYmXl4iUReO70KGR1uRAMLK2sLA1AcKtOBuTWSEFIzwaXl4NnhAmyGvZlb7wPxKN4kBF/AKIv7mV/LK6dBienIvCbEaggs6drxSKul14Vgbu5EOAs/OuUuJTc7J+zs8fLwp9E4Qv2/p25fhD22D0K0sb5H8R8oxTS6zE7BOrwhTfq2BdBTD1iDauRZbC6qupTtnD1IPaYbFf4w9+JsF/RPon9dCqrws9RWFU6HITSDfWqVL1DOgoZfwGRBc1hlSSjOgAAAABJRU5ErkJggg==',
@@ -294,6 +377,7 @@ var pre_databases = [
       'loggedOutRegex': /Cloudflare|Ray ID|experiencing some problems/,
       'matchRegex': /itemListElement/,
       'positiveMatch': true,
+      'replaceSpecials': true,
       'bar': 3},
   {   'name': 'PreDB.me',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAACVBMVEUAAAAAGDC6urrej6pEAAAAAXRSTlMAQObYZgAAACBJREFUCNdjQAOhQMCQtTRrKUMmEMAIKBdBgJVAFKMCAKceEPrGnb57AAAAAElFTkSuQmCC',
@@ -306,31 +390,28 @@ var pre_databases = [
       'searchUrl': 'https://predb.org/search/%band%+%release%/all',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /No results found/,
+      'replaceSpecials': true,
       'bar': 3},
   {   'name': 'PreDB.pw',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAFklEQVQI12NQUmfo6MdHdq1nUP8PJwENVw0h7PKMxQAAAABJRU5ErkJggg==',
       'searchUrl': 'https://predb.pw/search.php?search=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /<tbody><\/tbody>/,
-      'bar': 3},
-  {   'name': 'preFYP',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAgMAAAAOFJJnAAAACXBIWXMAABLIAAASyAH7Hi3CAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAMUExURQAAAAAAAAAAANHR0dBVfo0AAAACdFJOU/3+jYSN0wAAAE9JREFUGNNj+LsKDOoZfkEY6xleQRirGV79B4PVDK8hjNcMr8GK1gMZQCGgEuyMf6twMvDo+rOKMOMvlAF2IskMuONh3oF7EO5leCDAggUAEyPMhg3uaZgAAAAASUVORK5CYII=',
-      'searchUrl': 'https://pre.fyp.nl/search.html',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': /Sorry, no results/,
-      'mPOST': 'input-Search=%band%+%release%&submit-Search=',
+      'replaceSpecials': true,
       'bar': 3},
   {   'name': 'PREovh',
       'searchUrl': 'https://predb.ovh/api/v1/?q=%band%+%release%',
       'goToUrl': 'https://predb.ovh/?q=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /total": 0/,
+      'replaceSpecials': true,
       'bar': 3},
   {   'name': 'srrDB',
       'searchUrl': 'https://api.srrdb.com/v1/search/%band%/%release%',
       'goToUrl': 'https://www.srrdb.com/browse/%band%/%release%',
       'matchRegex': /resultsCount":"0/,
       'spaceEncode': '/',
+      'replaceSpecials': true,
       'bar': 3},
   {   'name': 'xREL',
       'searchUrl': 'https://www.xrel.to/search.html?xrel_search_query=%band%+%release%&lang=en_US',
@@ -347,14 +428,24 @@ var sites = public_sites.concat(private_sites, other_sites, pre_databases);
   // URLs for tests:
   // https://www.discogs.com/master/2385727-Twice-Formula-Of-Love-OT3
   // https://www.discogs.com/master/1257041-For-King-Country-Crave
+  // https://www.discogs.com/master/1787931-Baauer-Planets-Mad
 
 async function replaceSearchUrlParams(site, band, release, mPOSTsearch) {
   var search_url = ('mPOST' in site && !mPOSTsearch) ? site['mPOST'] : site['searchUrl'];
   var space_replace = ('spaceEncode' in site) ? site['spaceEncode'] : '+';
-  var band    =    band.trim().replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/\s+/g, space_replace);
-  var release = release.trim().replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/\s+/g, space_replace);
-  var s = search_url.replace(/%band%/g, band)
-                    .replace(/%release%/g, release);
+
+  let band_str    = band.trim();
+  let release_str = release.trim().replace(/\s\(.+\)/g, '');
+  if (site['replaceSpecials'] === true) {
+    // Replace non latin | Special chars remove. Not included "`", "-", ".", "_".
+    band_str    =    band_str.trim().replace(/[\u0250-\ue007f]/g, ' ').replace(/\'/g, '').replace(/\¬|\!|\"|\£|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\\|\[|\]|\;|\#|\,|\?|\/|\{|\}|\:|\@|\~|\<|\>/g, ' ');
+    release_str = release_str.trim().replace(/[\u0250-\ue007f]/g, ' ').replace(/\'/g, '').replace(/\¬|\!|\"|\£|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\\|\[|\]|\;|\#|\,|\?|\/|\{|\}|\:|\@|\~|\<|\>/g, ' ');
+  }
+  band_str    =    band_str.replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/\s+/g, space_replace).trim();
+  release_str = release_str.replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/\s+/g, space_replace).trim();
+
+  var s = search_url.replace(/%band%/g, band_str)
+                    .replace(/%release%/g, release_str);
   return s;
 }
 
@@ -466,38 +557,25 @@ function addLink(elem, site_name, target, site, state, scout_tick, post_data) {
 
   // Create elements on Artist pages.
   if (onArtistPage) {
-    //const bar_height = (parseInt(GM_config.get('mod_icons_size')) +6) +"px";
     const background = GM_config.get('greybackground_view') ? 'rgb(51, 51, 51)' : '';
     if ($('.result_box_main' + scout_tick).length == 0) {
       $(elem).after($('<tr/>').append($('<td/>',{'colspan':'9'}).addClass('result_box_main' + scout_tick)));
       $('.result_box_main' + scout_tick).css({'background-color': background, 'padding': '0px 4px'});
-    }
-    if (site['bar'] == 1) {
-      if ($('.result_bar_1st' + scout_tick).length == 0) {
-        $('.result_box_main' + scout_tick).append($('<div/>').addClass('result_bar_1st' + scout_tick));
-        //$('.result_bar_1st' + scout_tick).css({'height': bar_height});
-        $.each(valid_states, function(i, name) {
-          $('.result_bar_1st' + scout_tick).append("<span id='discogscout1_" + name + scout_tick + "'>"+'</span>');
-        });
-      }
-    }
-    if (site['bar'] == 2) {
-      if ($('.result_bar_2nd' + scout_tick).length == 0) {
-        $('.result_box_main' + scout_tick).append($('<div/>').addClass('result_bar_2nd' + scout_tick));
-        //$('.result_bar_2nd' + scout_tick).css({'height': bar_height});
-        $.each(valid_states, function(i, name) {
-          $('.result_bar_2nd' + scout_tick).append("<span id='discogscout2_" + name + scout_tick + "'>"+'</span>');
-        });
-      }
-    }
-    if (site['bar'] == 3) {
-      if ($('.result_bar_3rd' + scout_tick).length == 0) {
-        $('.result_box_main' + scout_tick).append($('<div/>').addClass('result_bar_3rd' + scout_tick));
-        //$('.result_bar_3rd' + scout_tick).css({'height': bar_height});
-        $.each(valid_states, function(i, name) {
-          $('.result_bar_3rd' + scout_tick).append("<span id='discogscout3_" + name + scout_tick + "'>"+'</span>');
-        });
-      }
+
+      $('.result_box_main' + scout_tick).append($('<div/>').addClass('result_bar_1st' + scout_tick));
+      $.each(valid_states, function(i, name) {
+        $('.result_bar_1st' + scout_tick).append("<span id='discogscout1_" + name + scout_tick + "'>"+'</span>');
+      });
+
+      $('.result_box_main' + scout_tick).append($('<div/>').addClass('result_bar_2nd' + scout_tick));
+      $.each(valid_states, function(i, name) {
+        $('.result_bar_2nd' + scout_tick).append("<span id='discogscout2_" + name + scout_tick + "'>"+'</span>');
+      });
+
+      $('.result_box_main' + scout_tick).append($('<div/>').addClass('result_bar_3rd' + scout_tick));
+      $.each(valid_states, function(i, name) {
+        $('.result_bar_3rd' + scout_tick).append("<span id='discogscout3_" + name + scout_tick + "'>"+'</span>');
+      });
     }
     // Add links to elements on Artist pages.
     if (site['bar'] == 1 || GM_config.get('all_in_one_bar')) {
@@ -515,30 +593,21 @@ function addLink(elem, site_name, target, site, state, scout_tick, post_data) {
     if ($('.result_box_main').length == 0) {
       $(elem).after($('<div/>').addClass('result_box_main'));
       $('.result_box_main').css({'background-color': background, 'padding': '4px 4px 0px 4px'});
-    }
-    if (site['bar'] == 1) {
-      if ($('.result_bar_1st').length == 0) {
-        $('.result_box_main').append($('<div/>').addClass('result_bar_1st'));
-        $.each(valid_states, function(i, name) {
-          $('.result_bar_1st').append("<span id='discogscout1_" + name + "'>"+'</span>');
-        });
-      }
-    }
-    if (site['bar'] == 2) {
-      if ($('.result_bar_2nd').length == 0) {
-        $('.result_box_main').append($('<div/>').addClass('result_bar_2nd'));
-        $.each(valid_states, function(i, name) {
-          $('.result_bar_2nd').append("<span id='discogscout2_" + name + "'>"+'</span>');
-        });
-      }
-    }
-    if (site['bar'] == 3) {
-      if ($('.result_bar_3rd').length == 0) {
-        $('.result_box_main').append($('<div/>').addClass('result_bar_3rd'));
-        $.each(valid_states, function(i, name) {
-          $('.result_bar_3rd').append("<span id='discogscout3_" + name + "'>"+'</span>');
-        });
-      }
+
+      $('.result_box_main').append($('<div/>').addClass('result_bar_1st'));
+      $.each(valid_states, function(i, name) {
+        $('.result_bar_1st').append("<span id='discogscout1_" + name + "'>"+'</span>');
+      });
+
+      $('.result_box_main').append($('<div/>').addClass('result_bar_2nd'));
+      $.each(valid_states, function(i, name) {
+        $('.result_bar_2nd').append("<span id='discogscout2_" + name + "'>"+'</span>');
+      });
+
+      $('.result_box_main').append($('<div/>').addClass('result_bar_3rd'));
+      $.each(valid_states, function(i, name) {
+        $('.result_bar_3rd').append("<span id='discogscout3_" + name + "'>"+'</span>');
+      });
     }
     // Add links to elements on Release/Master pages.
     if (site['bar'] == 1 || GM_config.get('all_in_one_bar')) {
@@ -577,7 +646,7 @@ async function maybeAddLink(elem, site_name, search_url, site, scout_tick, band,
   var success_match = ('positiveMatch' in site) ? site['positiveMatch'] : false;
   var target = search_url;
   if ('goToUrl' in site) {
-    target = await replaceSearchUrlParams({'searchUrl': site['goToUrl'], 'spaceEncode': ('spaceEncode' in site) ? site['spaceEncode'] : '+'}, band, release);
+    target = await replaceSearchUrlParams({'searchUrl': site['goToUrl'], 'spaceEncode': ('spaceEncode' in site) ? site['spaceEncode'] : '+',  'replaceSpecials': ('replaceSpecials' in site) ? site['replaceSpecials'] : false}, band, release);
   }
   // Check for results with POST method.
   if ('mPOST' in site) {
@@ -692,7 +761,7 @@ function perform(elem, band, release, scout_tick) {
         maybeAddLink(elem, site['name'], searchUrl, site, scout_tick, band, release);
       }
       if ('goToUrl' in site && !GM_config.get('auto_search')) {
-        searchUrl = await replaceSearchUrlParams({'searchUrl': site['goToUrl'], 'spaceEncode': ('spaceEncode' in site) ? site['spaceEncode'] : '+'}, band, release);
+        searchUrl = await replaceSearchUrlParams({'searchUrl': site['goToUrl'], 'spaceEncode': ('spaceEncode' in site) ? site['spaceEncode'] : '+',  'replaceSpecials': ('replaceSpecials' in site) ? site['replaceSpecials'] : false}, band, release);
         addLink(elem, site['name'], searchUrl, site, 'found', scout_tick);
       }
       if (!('goToUrl' in site) && GM_config.get('auto_search')) {
