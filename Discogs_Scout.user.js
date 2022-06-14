@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      1.6
+// @version      1.7
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -46,6 +46,9 @@
 // ==/UserScript==
 //
 /*=========================  Version History  ==================================
+
+1.7     -    Fixed: Possible bug with sites (if it's mPOST and there are special chars in the name).
+             Removed: PREcBurns, TPB-Proxy.
 
 1.6     -    New feature: Support for new Master release pages.
 
@@ -140,6 +143,7 @@ Examples (3 types of formating):
 'cat1=4&cat2=6&filter=%tt%'
 '{"cat1":4,"cat2":6,"filter":"all=%band%+%release%&sort=date"}'
 '{key:"cat",value:"4"},{key:"cat",value:"6"},{key:"filter",value:"%band%+%release%"}'  // (supports duplicate keys)
+Note: only these special chars are allowed in a site name if mPOST: .- ().
 
 #  'ignore404' (optional):
 Ignores all 4** HTTP errors.
@@ -284,13 +288,6 @@ var public_sites = [
       'loggedOutRegex': /Ray ID/,
       'matchRegex': /No results/,
       'bar': 2},
-  {   'name': 'TPB-Proxy',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8BAMAAAAkp6FXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAkUExURQAAABkZGTMZAEwzM0xMM0xMTGZMM2ZMTGZmTH9mZn9/Zv///0CpG+oAAAGySURBVDjLxdXNitNgFMbxx2NlHHMThz8DfmRTBnfdSDeDuhFczc5LKINQ0M2Ay16CFyDSTYxgnT435yLph0lqVXA8q5D8kpf3Oe8h8pHS7YF5tzpgrH6V+yDoV/FHYOA55X8CkhSHQBBczOfzKUEMgPzoa2y7zoWrAXBir8K26/v2OvqgtN2AYnejC/gVKLaJHwB37VUD2qtuN3PiV00AOfGs06ybaHNo48oATvdAPRT16Bg4+SdAABkHQAYGKOsG9sDjunAFace6C74GUPjUFeTS99zdpgU8qvMpwNkzPveOfZ2QQgFIKUDL3x7evHMERE6OgLbzA/Xals1BUKmw7DdwAIx50HyBeDEIZhSWK0gUiwEApeUZ+WQq9cgKkbYMYa+nktiRT0jNAMvXKleLlsQ72+u3SCARnDRRq8n9AyhICSm4tMekZbuOpnPft6dt2bYwtmDk1XkGqBmJJmRZ0SwRIAUSF0tfKYjndkW+3LT7C6TEZbuFK4XiIeRkA74FZz+lMBUJ2h6YmuxkeHO+GW/ZdjXQrs1LLRj1GxH5freEigGwt8Rg5TFQ6bb/en8PfgCTTMM5Mqng0wAAAABJRU5ErkJggg==',
-      'searchUrl': 'https://apibay.org/q.php?q=%band%+%release%&cat=101,104',
-      'goToUrl': 'https://tpb.cnp.cx/search.php?q=%band%+%release%&cat=101,104',
-      'loggedOutRegex': /Ray ID/,
-      'matchRegex': /No results/,
-      'bar': 2},
   {   'name': 'XDCC',
       'icon': 'data:image/png;base64,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',
       'searchUrl': 'https://www.xdcc.eu/search.php?searchkey=%band%+%release%',
@@ -366,13 +363,6 @@ var other_sites = [
 ];
 
 var pre_databases = [
-  {   'name': 'PREcBurns',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAADsSURBVHja3NhbFoMwCEVR5j9p+ltr4B7Io0v1L6nslGSZoLntve0IIK/kefWY+hUcZg8o5qIKNNLNgfaMCiBeWKNrjPzGs2GDDJ4xKVALHiLhHIjgcR8D0vAqdSMiAch0auIKlEYPCA7c2ynxDYDxk1bXAF05JJ1XpTR+Z4v5DvgLAfVyyHoXAF4D1ox/GtD/dwog6ZwA2GwtALwH2JLwzwfsr4BtAhovC3KEgTtaG4i2TJtIUbwn2wogP1UAgvUiwMoAOdnhs2kb2H66PlAfVCocr1c40zWa8yrT91aZR+rkA5U+Qdi3ip33ZwAb5/CcnuFpKAAAAABJRU5ErkJggg==',
-      'searchUrl': 'http://pre.c-burns.co.uk/pre.php?searchtext=%band%+%release%',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': />: 0</,
-      'replaceSpecials': true,
-      'bar': 3},
   {   'name': 'PreDB.de',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAB/lBMVEUAAABT8vIv4eE36upM9PMu4uIb2NhH8vFO9/c26uoi3d1c/v0Bycpf//1W+/kv5OQg29sKzs9f//8Hy8sW09M47e0S09MIzs8e2dlc//5B7e0u4+NT+fgJzc4IzMwLzc446Ogh29sGy8s45+c/7u4Ezc094+NS/PwY19gEzM0Ey8xP+voj3NwByMhL9vU76upa/fxb/v5D8PBM9vU/6+sBx8g06elU+fgCycou4+MDysoU0tMt4eFc/f0DzMwc19cw4+Mm398AyMhg//1G7+9P9fM+7e1Y/Pth//8AyMpH8vI55+cKy8sAyck65uZa//8n3NxJ8fET09Mp4eEo4eEw5+cS1NQz5OQMzc8c19dD7u5D7u0v4uIV09NZ+/sV0tI76ek76ekz5uZP9vUz5eVV+vks4eEg2to/6+sg2tpS9/cOzc9W+voPz89G8PA56OhH8PA46ekw4+MCysow4+MX1tZQ9vZS9vYJy8sFyclX+Pgo3t4k29sg2dkc19cY1dVZ/PsV09NW+vkS0dEt6ekt6Ohg//9b/v1U+PdR9/ZM9PQOz9AJ0NBF8fEX2ttc//8t5uYKzs5Z//9J+flK8vIz8fAi4eECyso88fFV//9V/fxQ/fw+9vZB9PRD7u4/7e0l5uYp5eUd4OAd29sP19cP1NQL1NQS09MH0NAu6ur6PYxoAAAAe3RSTlMAAqIFs5A3LBEO/vaGhIN3TiopIgz+8eXgz56QiIeDZV5eXVo7FxL++/v49fX18/Py7Orp6enj2da4sq+mnZuain1vbW1nZl1PT0E2MCcjIh0aFPv6+ff23drY2MO+uLaxsK6spaKioJuZlpSPioaGhX9vaWVXVlRUNCNdm1MpAAACAklEQVQ4y5XOZXfaUADG8YeFUZzhULyFuru7ezt3d3f3jm0s+JC6y77lkuwm0J6+2e/NPfmfm+TB/6DGh3uUyp7hcQoH0SqbUqny+vryVKpJqcV++o7ikpanr30Gg2/M1VJS3KHHHnnmXUdW0jt3zXnIEDlpms4OeBWlaacIPMd2NEqbfRDMnKKj0W0HCNfWL8bmXQjub7Jly0Xmm3a+sk5IQIyZuLBj0nIDWkOfOaHzFJl0kS+t7AxJ0Uci5AHneYgvRexHO9c/EBuWGTBkpzf4st4JGCzy97zkzSOM20khyC0GSOTvMpKrZWWryawgl8Cz9jbjWPfUVPfRrLDmgebPN14k0gbGjUhklojMatB1vO0QcS7xBIxniebDLJvN1pzoguakDERBwxX2uNZQAMKb0MBtzAEv3/hwYuKxMR+8kbQbo+nMs+jyYmXl4iUReO70KGR1uRAMLK2sLA1AcKtOBuTWSEFIzwaXl4NnhAmyGvZlb7wPxKN4kBF/AKIv7mV/LK6dBienIvCbEaggs6drxSKul14Vgbu5EOAs/OuUuJTc7J+zs8fLwp9E4Qv2/p25fhD22D0K0sb5H8R8oxTS6zE7BOrwhTfq2BdBTD1iDauRZbC6qupTtnD1IPaYbFf4w9+JsF/RPon9dCqrws9RWFU6HITSDfWqVL1DOgoZfwGRBc1hlSSjOgAAAABJRU5ErkJggg==',
       'searchUrl': 'https://predb.de/search.php?t=pre&s=%band%+%release%',
@@ -496,6 +486,7 @@ function addLink(elem, site_name, target, site, state, scout_tick, post_data) {
   // Link and add Form element for POST method.
   if ('mPOST' in site) {
     var form_name = site['name'] + '-form-' + scout_tick;
+        form_name = form_name.replace(/\s|\.|\(|\)/g, '-');
     var placebo_url = new URL(target).origin;
     link = $('<a />').attr('href', placebo_url).attr('onclick', "$('#" + form_name + "').submit(); return false;").attr('target', '_blank').attr('rel', 'noreferrer');
 
