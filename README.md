@@ -1,8 +1,11 @@
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=JF5BEQE3YQGH2)   
+![alt text](https://i.imgur.com/FFUvusd.png)
+
 # Discogs Scout:
 
 Adds links to Discogs pages from various sites.    
 Auto search for music on torrent and other sites.    
-Does multi auto-search on Artist/Discography pages.    
+Does multi auto-search on Artist/Discography/Release/Wantlist/List/Collection/Label pages.    
 Auto search local HDDs/filelists using Voidtools Everything search engine.    
 
 Supports browsers: Firefox, Chrome, Opera, Safari, Waterfox, Brave, Pale Moon, Edge.    
@@ -22,4 +25,7 @@ Meanings of the color borders around the icons:
 Follows a bastardization of the [semver](http://semver.org/) standard:
 * Patch versions will not change behavior, only the URL/settings for trackers.
 * Minor versions will definitely change code, although behavior may in fact remain the same.
-* Major versions will definitely change behavior, although it will only be increased at the discretion of the current maintainer.
+* Major versions will definitely change behavior, although it will only be increased at the discretion of the current maintainer.    
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=JF5BEQE3YQGH2)
+
