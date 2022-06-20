@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      2.0
+// @version      2.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -53,6 +53,8 @@
 //==============================================================================
 //                         Version History:
 //==============================================================================
+
+2.1     -    Fixed: Own wantlist page wasn't working.
 
 2.0     -    New feature: Support for the new version of the master pages (beta).
              New feature: Support for the wantlist/collection/label/list pages.
@@ -1087,7 +1089,6 @@ function performList() {
         release   = $(this).find('.title>a' ).text().trim();
       } else if (onWantlistPage || onCollectionPage) {
           // https://www.discogs.com/wantlist?user=GPX
-          // https://www.discogs.com/mywantlist
           // https://www.discogs.com/user/GPX/collection
           band = $(this).find('.release_title>a:eq(0)').text().trim();
           if ($(this).find('.release_title>a[href*="/release/"]').length > 0) {
@@ -1103,6 +1104,15 @@ function performList() {
           } else if ($(this).find('.collection-card-title>a[href*="/master/"]').length > 0) {
               release = $(this).find('.collection-card-title>a[href*="/master/"]:eq(0)').text().trim();
           }
+      } else if (onMyWantlistPage) {
+          // own wantlist page
+          // https://www.discogs.com/mywantlist
+          band = $(this).find('.release_title>a:eq(0)').text().trim();
+          if ($(this).find('.release_title_link>a[href*="/release/"]').length > 0) {
+            release = $(this).find('.release_title_link>a[href*="/release/"]:eq(0)').text().trim();
+          } else if ($(this).find('.release_title_link>a[href*="/master/"]').length > 0) {
+              release = $(this).find('.release_title_link>a[href*="/master/"]:eq(0)').text().trim();
+          }
       } else if (onListPage) {
           // This won't work properly if " - " is in band's name or there are more than one artist in title:
           const title  = $(this).find('.listitem_title>a:eq(0)').text().trim();
@@ -1113,7 +1123,7 @@ function performList() {
       if (band == "" || release == "") {
         GM.notification("Error detected! Please report this URL.", "IMDb Discogs Scout");
         console.log("Discogs Scout: Error detected! Please report this URL.");
-        return;
+        Discogs_Scout__Generate_Not_Defined_Error_To_Stop_The_Script();
       }
 
       let scout_tick = window.localStorage['_discogscout_tick'];
@@ -1452,6 +1462,7 @@ var onReleasePage      = false;
 var onLabelPage        = false;
 var onMyCollectionPage = false;
 var onCollectionPage   = false;
+var onMyWantlistPage   = false;
 var onWantlistPage     = false;
 var onListPage         = false;
 
@@ -1470,8 +1481,10 @@ if (Boolean(location.href.match('/artist/'))) {                                 
     onLabelPage = true;
 } else if (Boolean(location.href.match('/collection')) && Boolean(location.href.match('/user/'))) {    // collection page?
     onCollectionPage = true;
-} else if (Boolean(location.href.match('/mywantlist')) || Boolean(location.href.match('/wantlist'))) { // wantlist page?
+} else if (Boolean(location.href.match('/wantlist'))) {                                                // wantlist page?
     onWantlistPage = true;
+} else if (Boolean(location.href.match('/mywantlist'))) {                                              // own wantlist page?
+    onMyWantlistPage = true;
 } else if (Boolean(location.href.match('/lists/')) && !Boolean(location.href.match('/byuser/'))) {     // list page?
     onListPage = true;
 }
@@ -1546,6 +1559,9 @@ function startDiscogsScout() {
           performList();
       } else if (onWantlistPage) {
           console.log("Discogs Scout: Starting a wantlist page.");
+          performList();
+      } else if (onMyWantlistPage) {
+          console.log("Discogs Scout: Starting a mywantlist page.");
           performList();
       } else if (onListPage) {
           console.log("Discogs Scout: Starting a list page.");
