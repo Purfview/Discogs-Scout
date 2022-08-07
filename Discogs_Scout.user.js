@@ -491,6 +491,12 @@ var public_sites = [
 ];
 
 var private_sites = [
+  {   'name': 'Bemaniso',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABLFBMVEX////+/f79//////36/f/3ysP2+P0BQ/r09PkAN/kAPPj/+/cBP/bq5O7m3exbfunazuV1i+FJad/aydncws9sdM/musTrxsPvxsL/0sHUp7vYqbfGnrXy8//z7vTt7PTv5fL07PH16vHl4/AVR+/P0+5Ldus0X+sPSusFP+vc0egkVefBw+bg1uXXzeC1stwtU9zfz9usq9rMvtfZxNPAv8/Zus6Mic14e8380sze1sdycsbVtcPft8L0yb/Djr/qtr73w7zhrrzIo7zNq7uxqbvktbrdprrpj7jsu7fdz7bksrbSpra9mrbZl7bct7TjsLTWdbDUZbDsX6/VVqvkpaedkqbZx6TNvKDRjZqtlJOQd5LOqYDm1GrEnkzdwErjwC3WsCznxQDfvQA3Hf9FAAAAwElEQVQY0z3NhY7DMAwGYCdpRze+8XYwZmZmZmZ+/3dYprWNlMT69NsGQKCIIPVgG6AVPW/4Hqubh/v1B3j4Tdry09ujwEeA0Y32tdPzjInQ01mzpssOBPhrGRo2Q0YkDPlfLFdds0UCiAPlvDdhrVWGSxCcMhmNFrai5NeISubhrF4uJoSWaC6r1/qkmi9AH5B4ZWKpXKzlADDxyIIqldzl5BOKmN8NRKMPf4BgnTUEDLb342+gN310YET/TZs+L4sBFSEPQgFpAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://bemaniso.ws/torrents.php?searchstr=%band%+%release%&filter_cat[1]=1&action=basic&searchsubmit=1#',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
+      'matchRegex': /did not match anything/,
+      'bar': 2},
   {   'name': 'JPop',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEX+//9zhdCBkNWQnNwShcapt+y/vfQ/mNGap+Li3f4CbLRwrt6nq+fTzvygzubS6fVtDDNqAAABvklEQVQoz22RMWjUYBTHH1o8jkjDSzjJcEsS7qhQh+RDcVBwyHGQcwkakaqDtolWKThctZzSwSAEuzgdfGDHGvHg6pBaaJdeS48OLdzSQqGFmzvd3C59X3rd+t/+P773f/y/B1drtO44zjykzsehd+d8/4VbbQUJubN5OKlM6jgeNFa0HwOQXbeWTKKBqAYePu2DVAncT4ZpEylaAozE6oc3ZhzZOiIqEwMY8ayyfX/7ZWQQKNQBcp0Qze9h8Fw8udsmsBnq5jRv+hGBUo2At4tlznmwQzPaGmX871oPDznf37EpZOofSMmsvncBCke48AggXcJXx3yxGVsb4JUoVXqMM4eQP4jtn3C9UKXUrzjTAziOTOjfKH7OQNiT+81oXE7ymgBz2O1Jy81oLPc3r6YZuNd7//sXMxZnbxIQI7emr91+wow73NPSbIsS8iNGH6BjkdqNVhDNmDFD1BVr5T/UyiAJUGoBQLWDOPTWwjKBtdeoYibVmhJ3OF1B9ZvwSqRN9AlISx0cY7piRnrZAaGGT3sYs1F5285ArvUOM3UbYkLE1vwtxh48S9uXt24k63G8Xk8GMJS86pC+CH8ObniK6jHjur8AAAAASUVORK5CYII=',
       'searchUrl': 'https://jpopsuki.eu/torrents.php?searchstr=%band%+%release%',
