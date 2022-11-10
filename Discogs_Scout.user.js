@@ -54,7 +54,11 @@
 //                         Version History:
 //==============================================================================
 
-2.2     -    Case insensitive "EP" & "E.P.".
+2.4     -    Fixed: Inconsistency with mPOST formattings ["+" replacement with space for 2 & 3 formattings].
+             New feature: Added duplicate keys support for mPOST 1 formatting.
+             Added: PunkTorrents.
+
+2.3     -    Case insensitive "EP" & "E.P." removal.
 
 2.2     -    New feature: Option to remove "EP" & "E.P." from the end of release titles. [enabled by default]
 
@@ -165,9 +169,9 @@ HTTP request by POST method. For the sites that doesn't support GET.
 Right mouse click won't submit such request.
 Atm 'goToUrl' not supported with it.
 Examples (3 types of formating):
-'cat1=4&cat2=6&filter=%tt%'
-'{"cat1":4,"cat2":6,"filter":"all=%band%+%release%&sort=date"}'
-'{key:"cat",value:"4"},{key:"cat",value:"6"},{key:"filter",value:"%band%+%release%"}'  // (supports duplicate keys)
+1) 'cat1=4&cat2=6&filter=%tt%'   // (supports duplicate keys)
+2) '{"cat1":4,"cat2":6,"filter":"all=%band%+%release%&sort=date"}'
+3) '{key:"cat",value:"4"},{key:"cat",value:"6"},{key:"filter",value:"%band%+%release%"}'  // (supports duplicate keys)
 Note: only these special chars are allowed in a site name if mPOST: .- ().
 
 #  'ignore404' (optional):
@@ -419,6 +423,13 @@ var public_sites = [
       'searchUrl': 'https://pandacd.io/index.php?search=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /No results found/,
+      'bar': 2},
+  {   'name': 'PunkTorrents',
+      'icon': 'data:image/png;base64,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',
+      'searchUrl': 'https://www.punktorrents.com/search.php',
+      'loggedOutRegex': /Cloudflare|Ray ID|Register</,
+      'matchRegex': /no results were/,
+      'mPOST': 'keywords=%release%&action=do_search&postthread=2&forums[]=14&forums[]=19&findthreadst=1&showresults=threads',
       'bar': 2},
   {   'name': 'RlsBB',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAAgMAAADXB5lNAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAJUExURf///+KWHP7+/g40ZLEAAAABdFJOUwBA5thmAAAAxUlEQVQ4y83Uu3EFIQyFYRKX4L4c+CdQCfSjEhToVOlAsHcWrh+JxyZivmEEOrvQGrfR2ssd3trrHd5PYBt/BSZJSZck+QJFQUJjKHotQXIaJjCBnK6gYQldjhxGTkCBHOwALRg/hX6suIoO33eZEBdQB/N10pzABIvqJanm+iwzvEBKQJJYoCjQqjHOPGLPI/fmcjbnE0zPgV+GfA79i8/wSepjtW8z5OuHUYVsuiL0ijCg0WvyCPmfXI8Dvr/Zx2OwPxcfV/CgxyM3gh4AAAAASUVORK5CYII=',
@@ -747,8 +758,8 @@ function addLink(elem, site_name, target, site, state, scout_tick, post_data) {
         form_name = form_name.replace(/\s|\.|\(|\)/g, '-');
     var placebo_url = new URL(target).origin;
     link = $('<a />').attr('href', placebo_url).attr('onclick', "document.getElementById('"+form_name+"').submit(); return false;").attr('target', '_blank').attr('rel', 'noreferrer');
-
-    var data = (post_data.match('{')) ? post_data : '{"' + post_data.replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ') + '"}';
+    //var data = (post_data.match('{')) ? post_data.replace(/\+/g, ' ') : '{"' + post_data.replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ') + '"}';
+    var data = (post_data.match('{')) ? post_data.replace(/\+/g, ' ') : '{key:"' + post_data.replace(/&/g, '"},{key:"').replace(/=/g, '",value:"').replace(/\+/g, ' ') + '"}';
     var addform = $('<form></form>');
         addform.attr('id', form_name);
         addform.attr('action', target);
@@ -757,7 +768,7 @@ function addLink(elem, site_name, target, site, state, scout_tick, post_data) {
         addform.attr('target', '_blank');
         addform.attr('rel', 'noreferrer');
 
-    if (post_data.match('},{')) {
+    if (data.match('},{')) {
       const dataArray = (new Function("return [" +data+ "];")());
       dataArray.forEach(function (item, index) {
         let addinput = $("<input>");
