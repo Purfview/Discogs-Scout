@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      2.4
+// @version      2.4.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -53,6 +53,8 @@
 //==============================================================================
 //                         Version History:
 //==============================================================================
+
+2.4.1   -    Added: HQMusic, BitSearch.
 
 2.4     -    Fixed: Inconsistency with mPOST formattings ["+" replacement with space for 2 & 3 formattings].
              New feature: Added duplicate keys support for mPOST 1 formatting.
@@ -320,6 +322,12 @@ var public_sites = [
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /find any results/,
       'bar': 2},
+  {   'name': 'BitSearch',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAALVBMVEUAAABpMeY+LupRL+hbMef///9HL+lxT+uLcu+nlPO/sPbTyfn18v7j3fvs6P0FKMLaAAAAAXRSTlMAQObYZgAAArdJREFUSMd9lc9rE1EQxx9paX6csrCgVbzswbtsIPHW1cUkSg+iDzVJezBlbT0lTUhbT61Ni70FpFqhij9BpHgy+Bd48OhB8C6l/0Zn3subeZts+80lyXzzeTNvdiYirlwuJ87RgaO0cUY445A2k+Lp0GG1kuJh4LquE2jHswl+CHLOYYQo+HUAL61BLN4PlSgOuhhLoBAaRPIhHT/UgiRdY7hgAXzfQriMYIBPCI4zIgNxQqy3Jy90ykfp+Du5sEWMvNC66RPispTyESPoBELsS9DWWJozTd8ggl9o+EOEWWXoRYSoSNQDrkQZoogQVW2IJ5GOIkJowl2+zjymEDGiPE64BIbdyEJ8QcNDBxDc0luRhbiChrrVVJWjhQiO0NFnhBBZDDMieLE3lCeB3Y6r2sHXWR4udgnREtOeNpTe9E1HbiOC6kx5CrF8LBvbIwTU8rUNCGNQiB0szyDuwIefTEDEkurSS98vfv8HWcD7RttxVbs+eohYlqh6v3woG90wHMKHDy46kICIp5L1GR4LajoSQMkGRMwCARH6iIWDPYBvQxnooyNQlGTp728o5FjKxa6aESQoBJZZw+sswiNcxTJxRpjgrcB3r0xHduCicAZgEPNixtOIjW+vTUdK+HOUIqQ9LW5qYb8W0qS2RGZkME1dW3srf5hJVe32bMTSoQR1eNiFMjBiHuM1HnY0rNqIodRdNYgyGFIW4ol+7H1CzOFceIxYUYb7vC9wcLImTk29x/tC7cLHjNCE/7QvAoFKMULn8Ike8KrecR5JVdHo0L4Y7TmPEfNYJc+I0HrOjuaRrPdozCpmj1qI5nqPx4w26So77Em9Joym2WBP6pwg3UhCFAQrnYRgQHIWRWErM4kY+2ucGkeYA0i7ccR1wWIHI0qJf72MaIlEZUeQijhb7webAxHTKcR6cpKOAKdYAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://bitsearch.to/search?q=%band%+%release%&category=7&subcat=',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /Found <b>0</,
+      'bar': 2},
   {   'name': 'BoxAlbums',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAM1BMVEUAAAAAAAAYGBg9PT0LCwsGBgZJSUlDQ0NNTU01NTUsLCwiIiIREREJCQk6OjovLy8pKSnz5zBhAAAAAXRSTlMAQObYZgAAAE1JREFUGNONjDkOgDAMBNdHYnIB/38tR2EXiCgjTbFTLJah12BLQB4ISgPq6TMzJb5tXnaqUuiw+adpbOEh0lU8MCk/fi7+Q1bAOha5AKoaASjwhVhRAAAAAElFTkSuQmCC',
       'searchUrl': 'https://boxalbums.com/index.php?do=feedback&do=search&subaction=search&story=%band%+%release%',
@@ -517,6 +525,12 @@ var private_sites = [
   {   'name': 'Bemaniso',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABLFBMVEX////+/f79//////36/f/3ysP2+P0BQ/r09PkAN/kAPPj/+/cBP/bq5O7m3exbfunazuV1i+FJad/aydncws9sdM/musTrxsPvxsL/0sHUp7vYqbfGnrXy8//z7vTt7PTv5fL07PH16vHl4/AVR+/P0+5Ldus0X+sPSusFP+vc0egkVefBw+bg1uXXzeC1stwtU9zfz9usq9rMvtfZxNPAv8/Zus6Mic14e8380sze1sdycsbVtcPft8L0yb/Djr/qtr73w7zhrrzIo7zNq7uxqbvktbrdprrpj7jsu7fdz7bksrbSpra9mrbZl7bct7TjsLTWdbDUZbDsX6/VVqvkpaedkqbZx6TNvKDRjZqtlJOQd5LOqYDm1GrEnkzdwErjwC3WsCznxQDfvQA3Hf9FAAAAwElEQVQY0z3NhY7DMAwGYCdpRze+8XYwZmZmZmZ+/3dYprWNlMT69NsGQKCIIPVgG6AVPW/4Hqubh/v1B3j4Tdry09ujwEeA0Y32tdPzjInQ01mzpssOBPhrGRo2Q0YkDPlfLFdds0UCiAPlvDdhrVWGSxCcMhmNFrai5NeISubhrF4uJoSWaC6r1/qkmi9AH5B4ZWKpXKzlADDxyIIqldzl5BOKmN8NRKMPf4BgnTUEDLb342+gN310YET/TZs+L4sBFSEPQgFpAAAAAElFTkSuQmCC',
       'searchUrl': 'https://bemaniso.ws/torrents.php?searchstr=%band%+%release%&filter_cat[1]=1&action=basic&searchsubmit=1#',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
+      'matchRegex': /did not match anything/,
+      'bar': 2},
+  {   'name': 'HQMusic',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAeFBMVEUAAACwsLCsrKzBwsHr6uvx8fHy8vLs7OzCwsLm5ubs7O3t7u7u7u3u7u7o6ejn5+fp6eni4uLi4uO/v7/k5OTl5eTe3t3e3d7f39/f4N/V1NXZ2dna2tvb2tvW1tWxsbG3t7fQ0NDV1dTU1dXW1tbS0tK4uLj///+qPNcxAAAAAXRSTlMAQObYZgAAAAFiS0dEJy0PqCMAAAAHdElNRQfmDAEOMiHaArF+AAAAaElEQVQY063PSQ6AIAwFUMQZB1ScUXG+/xH1Y4h7YxdN+tI2LSG/hEXvIATZ0rXtuC7A8/wAQkPGGCCKk5QCODcjWaYhL8SzTJSVhroxHW2noZdSAoZxmABqXtYNsO/HqTCq3jvUp0cu0gcEZ2tTQRMAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMTItMDFUMTQ6NTA6MzMrMDA6MDAO8TmIAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTEyLTAxVDE0OjUwOjMzKzAwOjAwf6yBNAAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMi0xMi0wMVQxNDo1MDozMyswMDowMCi5oOsAAAAASUVORK5CYII=',
+      'searchUrl': 'http://hqmusic.info/torrents.php?searchstr=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
       'matchRegex': /did not match anything/,
       'bar': 2},
