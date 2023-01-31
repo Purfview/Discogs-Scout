@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      2.5
+// @version      2.6
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -31,6 +31,15 @@
 // @include      https://www.discogs.com/mywantlist*
 // @include      https://www.discogs.com/lists/*
 //
+// @include      https://www.discogs.com/*/artist/*
+// @include      https://www.discogs.com/*/master/*
+// @include      https://www.discogs.com/*/release/*
+// @include      https://www.discogs.com/*/label/*
+// @include      https://www.discogs.com/*/user/*/collection*
+// @include      https://www.discogs.com/*/wantlist*
+// @include      https://www.discogs.com/*/mywantlist*
+// @include      https://www.discogs.com/*/lists/*
+//
 // @connect      *
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -54,6 +63,11 @@
 //                         Version History:
 //==============================================================================
 
+2.6     -    New feature: Support for other sites's languages.
+             Fixed: Bug with 'replaceSpecials', it was deleting 'f'.
+             "E.P" removal.
+             Added: NZBKing, Alterportal.
+             Updated: Tidal.
 
 2.5     -    Fixed issues with a page reload/refresh.
 
@@ -289,7 +303,7 @@ var icon_sites = [
       'bar': 1},
   {   'name': 'Tidal',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA5CAAAAACpc9xZAAABNElEQVRIx+3VPY7CMBAF4FmEtKHkpwFxAxA1zh0oNhyAnp46oqelS8UBKLamzgmSK+QANAitEm8ce8YrbWJhl8iv8sj+JCt6VgB8fHzePx+vDf8z2Id6mB/megj3AxP8jJ85w2F65dcZDix/xoEJPjjPGEFOlGWcP7ppA5E2sKZThAYaSCipgpJK2EkJ1nQ9QyguvM5w3U43dzrMb+eK1tX5pjfumxY5TkrcL6JVSofTVVTgukzGbdcdIi0igAXSdAGAtEyG7Z9IUQGJCoi0EyoqoaISSmqAglYIG4oQ4KuoTBBgdNrqYXlZ6mF7Gpkr3+/pNftmeuj1X39wdXMy5vJSm8q5UNVVe0pdtaUhlZznoZU8/mn80UpSh83NMVFriNQBSuoEBf1xgwCT3cT/9Hx8VH4BDjJCoXu/TPcAAAAASUVORK5CYII=',
-      'searchUrl': 'https://store.tidal.com/search?query=%band%+%release%',
+      'searchUrl': 'https://listen.tidal.com/search?q=%band%+%release%',
       'bar': 1},
   {   'name': 'TPB-Proxy',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8BAMAAAAkp6FXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAkUExURQAAABkZGTMZAEwzM0xMM0xMTGZMM2ZMTGZmTH9mZn9/Zv///0CpG+oAAAGySURBVDjLxdXNitNgFMbxx2NlHHMThz8DfmRTBnfdSDeDuhFczc5LKINQ0M2Ay16CFyDSTYxgnT435yLph0lqVXA8q5D8kpf3Oe8h8pHS7YF5tzpgrH6V+yDoV/FHYOA55X8CkhSHQBBczOfzKUEMgPzoa2y7zoWrAXBir8K26/v2OvqgtN2AYnejC/gVKLaJHwB37VUD2qtuN3PiV00AOfGs06ybaHNo48oATvdAPRT16Bg4+SdAABkHQAYGKOsG9sDjunAFace6C74GUPjUFeTS99zdpgU8qvMpwNkzPveOfZ2QQgFIKUDL3x7evHMERE6OgLbzA/Xals1BUKmw7DdwAIx50HyBeDEIZhSWK0gUiwEApeUZ+WQq9cgKkbYMYa+nktiRT0jNAMvXKleLlsQ72+u3SCARnDRRq8n9AyhICSm4tMekZbuOpnPft6dt2bYwtmDk1XkGqBmJJmRZ0SwRIAUSF0tfKYjndkW+3LT7C6TEZbuFK4XiIeRkA74FZz+lMBUJ2h6YmuxkeHO+GW/ZdjXQrs1LLRj1GxH5freEigGwt8Rg5TFQ6bb/en8PfgCTTMM5Mqng0wAAAABJRU5ErkJggg==',
@@ -324,6 +338,12 @@ var public_sites = [
       'searchUrl': 'https://1trance.org/?t=%band%+-+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /find any results/,
+      'bar': 2},
+  {   'name': 'Alterportal',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAXVBMVEUBAAAMChFVVVUzNDUlIiEYFxYRNUoHJS8OGiYjUWnP/P6s5f2GvOc2ncoYXIctdpgskrNPjK0wWYeM1vx70PqOy952ptNriK5Wco7z//+t2PSa0/SOyPGJ2ONGbrnTmD37AAAAjUlEQVQY012LBw7DMAwDqTqRvJ2ddP7/mZVbowF6WiBE4vIHjDHszAm6jvLQnYB6KolIj62LoJ2TpR/VkRNTr9i6oHBiCOGEB5bBiQDCqFB2MrnM4CLNwlbcWspo61sLNj19WA5Cw47+6ue9CZ1p9v7+MNWvQsfFcIsbfTReBBpDiPFo+Z0gW4jLar+JN3L0BYwvMQFJAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://alterportal.net/index.php?do=search&subaction=search&titleonly=3&story=%band%+%release%',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /никаких результатов/,
       'bar': 2},
   {   'name': 'BitSearch',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAALVBMVEUAAABpMeY+LupRL+hbMef///9HL+lxT+uLcu+nlPO/sPbTyfn18v7j3fvs6P0FKMLaAAAAAXRSTlMAQObYZgAAArdJREFUSMd9lc9rE1EQxx9paX6csrCgVbzswbtsIPHW1cUkSg+iDzVJezBlbT0lTUhbT61Ni70FpFqhij9BpHgy+Bd48OhB8C6l/0Zn3subeZts+80lyXzzeTNvdiYirlwuJ87RgaO0cUY445A2k+Lp0GG1kuJh4LquE2jHswl+CHLOYYQo+HUAL61BLN4PlSgOuhhLoBAaRPIhHT/UgiRdY7hgAXzfQriMYIBPCI4zIgNxQqy3Jy90ykfp+Du5sEWMvNC66RPispTyESPoBELsS9DWWJozTd8ggl9o+EOEWWXoRYSoSNQDrkQZoogQVW2IJ5GOIkJowl2+zjymEDGiPE64BIbdyEJ8QcNDBxDc0luRhbiChrrVVJWjhQiO0NFnhBBZDDMieLE3lCeB3Y6r2sHXWR4udgnREtOeNpTe9E1HbiOC6kx5CrF8LBvbIwTU8rUNCGNQiB0szyDuwIefTEDEkurSS98vfv8HWcD7RttxVbs+eohYlqh6v3woG90wHMKHDy46kICIp5L1GR4LajoSQMkGRMwCARH6iIWDPYBvQxnooyNQlGTp728o5FjKxa6aESQoBJZZw+sswiNcxTJxRpjgrcB3r0xHduCicAZgEPNixtOIjW+vTUdK+HOUIqQ9LW5qYb8W0qS2RGZkME1dW3srf5hJVe32bMTSoQR1eNiFMjBiHuM1HnY0rNqIodRdNYgyGFIW4ol+7H1CzOFceIxYUYb7vC9wcLImTk29x/tC7cLHjNCE/7QvAoFKMULn8Ike8KrecR5JVdHo0L4Y7TmPEfNYJc+I0HrOjuaRrPdozCpmj1qI5nqPx4w26So77Em9Joym2WBP6pwg3UhCFAQrnYRgQHIWRWErM4kY+2ucGkeYA0i7ccR1wWIHI0qJf72MaIlEZUeQijhb7webAxHTKcR6cpKOAKdYAAAAAElFTkSuQmCC',
@@ -428,6 +448,12 @@ var public_sites = [
       'searchUrl': 'https://nnmclub.to/forum/tracker.php?nm=%band%+Дискография',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': 'Не найдено',
+      'bar': 2},
+  {   'name': 'NZBKing',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAALVBMVEX///8AAAAWFhaTk5MlJSXz8/PDw8Ozs7OHh4dLS0tiYmLl5eXc3NzPz8+pqamHx8n4AAAAT0lEQVQI12PADgKgNN8CKINTAcp4KAUir+1xKJLgakhjSCxYzqm9M1SYgXmuoqCgYMUEBgZHQRAAmpDkAgQaQNVHlIBAHMgINgaCHgY8AABKXA/GCcvtCwAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://www.nzbking.com/?q="%band%"+"%release%"&ft=vi&gr=&po=&so=',
+      'loggedOutRegex': /Cloudflare|Ray ID/,
+      'matchRegex': /did not match any/,
       'bar': 2},
   {   'name': 'PandaCD',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA7VBMVEUAAAAAAAAAAAD+/v6mpqYAAAAAAAAAAAABAQGLi4sAAAAAAAAAAAAAAAAAAAD7+/v5+fn9/f0AAAAAAAAAAAAAAAD///8AAAAWFhYAAAAAAAD+/v79/f0bGxsAAAAmJiYAAABzc3O+vr6enp6Hh4eurq4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD9/f0cHBwLCwv09PQ1NTUXFxcVFRVPT089PT3h4eFbW1vd3d0aGhqjo6PAwMC2traIiIjr6+vt7e3n5+fm5uaOjo59fX2qqqoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///9JeSbxAAAATXRSTlMA+uvtu01JIfa/r5o6JBzy8Oi1YVQ0/PLx8e/u6unm49/e2tbDu5dmVUQ/LhgB+PDu7erm5uXl5ODf39va1tTQzMvFwL+9uaSeWVArH5NNKDcAAAFASURBVDjLrdLXcsIwEAVQydgGF3qHBEKA0NN77/3u/39OjCURYcwb58Eazd1Z7eyYbVh6VCza6XXp+MNAqOWVY+JkARo3Gc3tBgKHnS6EhrWcDziA+ywRQeIDPbeCvJ0j2r/YxcK39n4VuKxQ7gy6eoYpLnBcoVtEuCovA8hS2JxftzkWJrLAA27oCECq3yRK9FOQ9mSBMW9wHuSPFHpSTVozMSJQoxwAk6Q3SGJMG+jQFcATRFu91/kX0jgsKAFdugO2icgBnOA4hSDW+YU5UdADXoLjBEIpLBip5eaJmo4TPJGH5IufQFy0Ic3lIWeGavEg8me1iB0mfEJVmMErCZNHF+XjX+1Au/wwqYBYLlPS1bjcmLKFUkzObaYp8pV8yJZY9Uh/m0X8vut5IcNWlT1D7sebsDWm/tDyk2yz/gCezpSjzj3NtQAAAABJRU5ErkJggg==',
@@ -724,11 +750,11 @@ async function replaceSearchUrlParams(site, band, release, mPOSTsearch) {
 
   let release_str = release.replace(/\(.+\)/g, '')          // delete brackets with anything inside
                            .replace(/-|–/g, ' ').trim();    // replace - – with space
-      release_str = GM_config.get('remove_ep') ? release_str.replace(/\sEP+$|\sE\.P\.+$/i, '') : release_str // remove " EP" & " E.P." from the end
+      release_str = GM_config.get('remove_ep') ? release_str.replace(/\sEP+$|\sE\.P\.+$|\sE\.P/i, '') : release_str // remove " EP"," E.P." & " E.P"  from the end
 
   if (site['replaceSpecials'] === true) {                   // Replace non latin | Special chars remove. Not included "`", "-", ".", "_".
-    band_str    =    band_str.trim().replace(/[\u0250-\ue007f]/g, ' ').replace(/\'/g, '').replace(/\¬|\!|\"|\£|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\\|\[|\]|\;|\#|\,|\?|\/|\{|\}|\:|\@|\~|\<|\>/g, ' ');
-    release_str = release_str.trim().replace(/[\u0250-\ue007f]/g, ' ').replace(/\'/g, '').replace(/\¬|\!|\"|\£|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\\|\[|\]|\;|\#|\,|\?|\/|\{|\}|\:|\@|\~|\<|\>/g, ' ');
+    band_str    =    band_str.trim().replace(/[\u0250-\ue007]/g, ' ').replace(/\'/g, '').replace(/\¬|\!|\"|\£|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\\|\[|\]|\;|\#|\,|\?|\/|\{|\}|\:|\@|\~|\<|\>/g, ' ');
+    release_str = release_str.trim().replace(/[\u0250-\ue007]/g, ' ').replace(/\'/g, '').replace(/\¬|\!|\"|\£|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\\|\[|\]|\;|\#|\,|\?|\/|\{|\}|\:|\@|\~|\<|\>/g, ' ');
   }
   // encode illegal chars
   band_str    =    band_str.replace(/\+/g, '%2B').replace(/&/g, '%26').replace(/#/g, '%23').replace(/=/g, '%3D').replace(/\s+/g, space_replace).trim();
@@ -1339,7 +1365,7 @@ var config_fields = {
   },
   'remove_ep': {
     'type': 'checkbox',
-    'label': 'Remove "EP" & "E.P." from the end of release titles?',
+    'label': 'Remove "EP", "E.P." & "E.P" from the end of release titles?',
     'default': true
   },
   'highlight_sites': {
