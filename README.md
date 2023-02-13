@@ -9,7 +9,7 @@ Does multi auto-search on Artist/Discography/Release/Wantlist/List/Collection/La
 Auto search local HDDs/filelists using Voidtools Everything search engine.    
 
 Supports browsers: Firefox, Chrome, Opera, Safari, Waterfox, Brave, Pale Moon, Edge.    
-Supports: [Violentmonkey](https://violentmonkey.github.io/), [Tampermonkey](https://www.tampermonkey.net/), [Greasemonkey](https://www.greasespot.net/), [Greasemonkey v3](https://github.com/greasemonkey/greasemonkey/releases?after=4.0) & [Greasemonkey for Pale Moon](https://github.com/janekptacijarabaci/greasemonkey/releases).  
+Supports: [Violentmonkey](https://violentmonkey.github.io/), [Tampermonkey](https://www.tampermonkey.net/), [Greasemonkey](https://www.greasespot.net/), [Greasemonkey v3](https://web.archive.org/web/20171009185612/https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/versions/) & [Greasemonkey for Pale Moon](https://github.com/janekptacijarabaci/greasemonkey/releases).  
 
 Meanings of the color borders around the icons:  
 ![#008000](https://via.placeholder.com/15/008000/008000.png) - `Search completed. Results found.`  
