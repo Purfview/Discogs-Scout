@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      2.7.1
+// @version      3.0
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -62,6 +62,8 @@
 //==============================================================================
 //                         Version History:
 //==============================================================================
+
+3.0     -    Fixed: Release and Artist pages.
 
 2.7.1   -    Removed: PREovh.
 
@@ -1095,17 +1097,22 @@ function perform(elem, band, release, scout_tick) {
 //    Artist Page code
 //==============================================================================
 
-function performArtist() {
-  // Check if artist has releases
-  if (!Boolean($('.credit_type:contains("Releases")').text().match('Releases'))) {
-    console.log("Discogs Scout: Artist page doesn't have releases! Quitting...")
-    return;
-  }
+async function performArtist() {
   const band   = $('meta[property="og\:title"]').attr('content').replace(/\(\d+\)/, '').trim();
-  if($('.card').length !== 0) {
-    $('.card').each(function() {
+
+  // Wait for dynamic content to be loaded:
+  await sleep(1000);
+  if($('.textWithCoversRow_3IhZ3').length == 0) {
+    await sleep(1000);
+    if($('.textWithCoversRow_3IhZ3').length == 0) {
+      await sleep(1000);
+    }
+  }
+
+  if($('.textWithCoversRow_3IhZ3').length !== 0) {
+    $('.textWithCoversRow_3IhZ3').each(function() {
       const elem     = $(this);
-      const release  = $(this).find('.title>a').text();
+      const release  = $(this).find('.title_oY1q1>.link_1ctor').text();
 
       let scout_tick = window.localStorage['_discogscout_tick'];
       if (!scout_tick) {
@@ -1117,7 +1124,26 @@ function performArtist() {
       scout_tick = parseInt(scout_tick) + 1;
       window.localStorage['_discogscout_tick'] = scout_tick;
     });
+    startObserver2();
+  } else {
+      GM.notification("Artist page code error or No releases!", "Discogs Scout");
+      console.log("Discogs Scout: Artist page code error or No releases!");
   }
+}
+
+function startObserver2() {
+  console.log('Discogs Scout: Starting Observer2.');
+  if ($('.releasesPath_2MuQ7').length) {
+    const obscfg = {childList: true};
+    const obs = new MutationObserver(start_performArtist);
+    obs.observe($('.releasesPath_2MuQ7')[0], obscfg);
+  }
+}
+
+function start_performArtist(mutation, observer) {
+  console.log('Discogs Scout: Observer2 is triggered.');
+  observer.disconnect();
+  performArtist();
 }
 
 //==============================================================================
@@ -1139,19 +1165,19 @@ async function performRelease() {
         band    = $('[id*=profile_title]').find('a').text().trim();
         release = $('[id*=profile_title]').children().last().text().trim();
       } else if ($('#master_schema').length > 0) { // the new version of the master page (beta)
-          band    = $('[class^=body]').find('h1>span>a.link_1ctor:first').text().trim();
+          band    = $('[class^=body]').find('h1>span>a.link_15cpV:first').text().trim();
           release = JSON.parse(document.getElementById('master_schema').textContent)['@graph'][0]['name'];
       }
   } else if (Boolean(location.href.match('/release/'))) {
       if ($('#release_schema').length > 0) {
-        band    = $('[class^=body]').find('h1>span>a.link_1ctor:first').text().trim();
+        band    = $('[class^=body]').find('h1>span>a.link_15cpV:first').text().trim();
         release = JSON.parse(document.getElementById('release_schema').textContent)['name'];
       }
   }
 
   if (band == "" || release == "") {
-    GM.notification("Error detected! Please report this URL.", "IMDb Discogs Scout");
-    console.log("Discogs Scout: Error detected! Please report this URL.");
+    GM.notification("Release code error!", "Discogs Scout");
+    console.log("Discogs Scout: Release code error!");
     return;
   }
   perform(elem, band, release);
@@ -1205,8 +1231,8 @@ function performList() {
       }
 
       if (band == "" || release == "") {
-        GM.notification("Error detected! Please report this URL.", "IMDb Discogs Scout");
-        console.log("Discogs Scout: Error detected! Please report this URL.");
+        GM.notification("List page code error 1!", "Discogs Scout");
+        console.log("Discogs Scout: List page code error 1!");
         Discogs_Scout__Generate_Not_Defined_Error_To_Stop_The_Script();
       }
 
@@ -1221,8 +1247,8 @@ function performList() {
       window.localStorage['_discogscout_tick'] = scout_tick;
     });
   } else {
-      GM.notification("Error detected! Please report this URL.", "IMDb Discogs Scout");
-      console.log("Discogs Scout: Error detected! Please report this URL.");
+      GM.notification("List page code error 2!", "Discogs Scout");
+      console.log("Discogs Scout: List page code error 2!");
       return;
   }
 }
@@ -1590,7 +1616,7 @@ function startObserver() {
     const obs = new MutationObserver(checkDummyElem);
     obs.observe($('[class^=body]')[0], obscfg);
   } else {
-    GM.notification("Element not found! Please report it.", "IMDb Discogs Scout");
+    GM.notification("Element not found! Please report it.", "Discogs Scout");
     console.log("Discogs Scout (Start Error): Element not found! Please report it.");
     return;
   }
@@ -1625,7 +1651,7 @@ function startDiscogsScout() {
         console.log("Discogs Scout: Not starting. [Report it if you think that it should start here!]");
         return;
       } else {
-        GM.notification("Large covers layout is not supported!", "IMDb Discogs Scout");
+        GM.notification("Large covers layout is not supported!", "Discogs Scout");
         console.log("Discogs Scout: Not starting. [Report it if you think that it should start here!]");
         return;
       }
