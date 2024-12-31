@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      3.0.2
+// @version      3.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -63,6 +63,9 @@
 //                         Version History:
 //==============================================================================
 
+3.1     -    Adjusted the settings position to be more compatible with the mobile browsers.
+             Warning for Chrome/Chromium users shown 3 times per version
+             Updated: Qobuz & Apple Music split to US/UK
 
 3.0.2   -    Added: Mora (JP), Ototoy (JP), Tower (JP)
 
@@ -227,9 +230,15 @@ var icon_sites = [
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAkFBMVEUAAAD///8EBQX/qABUVlYbHR3/1ZCTlJT7+/vMzMzz8/P/8Nj/v1AwMTHZ2dn/rRN2dnb/6suioqIDBAT+pwD/+vL/9eW+vr6wsbH/4K7/ynLm5uaFhob/w2H/5bz/5Lv/yXL/uD7/9ebNzc2UlZX/0IJmZ2dERUVDRET/sin/rBPl5eX/2p//2Z9lZmZDRUXHx2gpAAAAAXRSTlMAQObYZgAAAclJREFUSMedlul2gjAQhUsm7JuAyqK4tNZq1/d/u0YYExKIob3n8CPH+2XuJEHydJdlENo0bgPjWTPlTfsTl9KCkB/q+mNinOcUE6G4UoiRP0E7Fw1GhOS3iao3mZA72Kj+gj2uUmI4WJAJ2UrbwwL3eePK911ezddWyNGxkPtxtQDFDAEGNAKn3nDGocsLqoBQwLK7CQ5KBKgCaOXjws4AElaH0nhehU1OCZcZCHBp5gK+Tf4ElJLvogHks4cLU7LNezEC9/x22Q2NQEBQOe60Caj4eTYBGsPCBHwrBuNOU1L0bzFPiPrQAFvpFQvEHm4NPRCbEX5MhPxpIBEO5YTEKsC71MjWAKXiy3GGS6ACattFN22FIc+B/njnIjzd4NIurIcvUE4ZY9NtgikpHqwsy9YcCGvrsbIWbgo5ABGj9WK/t04DkPFI+xQOiOgVwbPoIUzhEbJy0tZK02HT4RFgGdWrKfuOpYE6hKb/u/dwkgZuipxMjl8f0iVAurM+YT34ZGEjrAp7rtGr06mNYNlPw9JHjsUBnvQdhkI3XLtVX6ufUUSEGXWsR5cBT+4wHfiPTjjjKhDuHadhfXxl6qJ5/7mcGG8o6uS/49obpgvEcMsAAAAASUVORK5CYII=',
       'searchUrl': 'https://www.amazon.com/s?k=%band%+%release%&i=music-intl-ship&ref=nb_sb_noss',
       'bar': 1},
-  {   'name': 'Apple Music',
+  {   'name': 'Apple Music (UK)',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAhFBMVEUAAAD7W3T7Vm/6ITz7VW77V3D6Ij37V3D6Ij37V3D6Hzn7W3T6Iz76K0X6KUP7W3T6IDr6J0H7OlT6KUP6ITz6MUz7Ql3////7UGr7R2H7V3H7S2T7VW7+wsr9lqP7ZHn/8fP9pLD+1tv9q7X9nKn8jJv8gpH8dof+6ez+3OH+z9X9tLzq9unlAAAAEnRSTlMA9ubYyXZbSSsf9u/v7cu8j4UwG0qCAAABRElEQVQ4y4WRi3aCMAyGM0AF7xYoN0thAiK+//stoZFuY7gvhYb+3wmcAyDB6uTsPn6xc06rAEY2Xr6AtxlzJ1/EQSPwrm/wAlhd0xlXrXPuVuDRxkXk97ZWj75l1wMntegOsyohmsIcOUD3wqzGZFYgoLCoxFJmfPi/kE2wUD1U0/ZlxkBmUQlmnU4zWXyWchLkVEphhrBgCuQLFG7ckSC4BWlRN/GHICZIYDIUGBByKhS4I4FbEBY7QX6fIGKB109B9238EmJK6UbCuOt66BMUTEE8IYeatjv9MhQYQItW1tVDQoJQCdHFHPCEdKBTK1TaTiDCOiGaEFt6RdXEVgiJp5lLbazLVptTeoLDuI9fpkQ44wDH0BjPZ2dzyxEuponGNecCvhu9wfUB1vsoChfWfg3IenGGiznhn93tPN26Zx/DL8jaVsC2vSlKAAAAAElFTkSuQmCC',
-      'searchUrl': 'https://music.apple.com/search?term=%band%+%release%',
+      'searchUrl': 'https://music.apple.com/gb/search?term=%band% %release%',
+      'spaceEncode': ' ',
+      'bar': 1},
+  {   'name': 'Apple Music (US)',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAhFBMVEUAAAD7W3T7Vm/6ITz7VW77V3D6Ij37V3D6Ij37V3D6Hzn7W3T6Iz76K0X6KUP7W3T6IDr6J0H7OlT6KUP6ITz6MUz7Ql3////7UGr7R2H7V3H7S2T7VW7+wsr9lqP7ZHn/8fP9pLD+1tv9q7X9nKn8jJv8gpH8dof+6ez+3OH+z9X9tLzq9unlAAAAEnRSTlMA9ubYyXZbSSsf9u/v7cu8j4UwG0qCAAABRElEQVQ4y4WRi3aCMAyGM0AF7xYoN0thAiK+//stoZFuY7gvhYb+3wmcAyDB6uTsPn6xc06rAEY2Xr6AtxlzJ1/EQSPwrm/wAlhd0xlXrXPuVuDRxkXk97ZWj75l1wMntegOsyohmsIcOUD3wqzGZFYgoLCoxFJmfPi/kE2wUD1U0/ZlxkBmUQlmnU4zWXyWchLkVEphhrBgCuQLFG7ckSC4BWlRN/GHICZIYDIUGBByKhS4I4FbEBY7QX6fIGKB109B9238EmJK6UbCuOt66BMUTEE8IYeatjv9MhQYQItW1tVDQoJQCdHFHPCEdKBTK1TaTiDCOiGaEFt6RdXEVgiJp5lLbazLVptTeoLDuI9fpkQ44wDH0BjPZ2dzyxEuponGNecCvhu9wfUB1vsoChfWfg3IenGGiznhn93tPN26Zx/DL8jaVsC2vSlKAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://music.apple.com/us/search?term=%band% %release%',
+      'spaceEncode': ' ',
       'bar': 1},
   {   'name': 'Bandcamp',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAS1BMVEUAAAAdoMMdoMMdoMMdoMMdoMMdoMMdocQdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMMdoMO469wmAAAAGHRSTlMAA/xhZVUSCM/D8uba2K6bkodyW0xDMiMrDxECAAAAnUlEQVQ4y82SOQ7FIAwFCUuA7Ht8/5N+S4ls6fOaKE2moRgxkg3mW1SQJ4HgXYFfRZuNLP1jadJCIltAXS0BBwNe7seebOlTlMACA4HNRd0S8FlHmMsAs7O5/NmgwHB7PkYUsIcEDqRp1MCAAs0pgR2OOLO5ySjQ6pIDDCwSiAktuY/yCh4GnC65Q8+cjTDBJW86woo+Wqjef/ZP8QPdwiBy+gWrIwAAAABJRU5ErkJggg==',
@@ -296,9 +305,15 @@ var icon_sites = [
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQMAAABJtOi3AAAABlBMVEUjGBX///8TtpOrAAAAUElEQVQI12OAgjo8BOP/fwwM7P+BJD+IkP///w+I+AEUBEogEfwgQh5O2IOIOpApf0DED5BRIIL5A5BgfwAj+A8ACfkGIGEPJkBW1gAJMAAAX4Invu/kxScAAAAASUVORK5CYII=',
       'searchUrl': 'https://ototoy.jp/find/?q="%release%"',
       'bar': 1},
-  {   'name': 'Qobuz',
+  {   'name': 'Qobuz (UK)',
       'icon': 'data:image/png;base64,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',
-      'searchUrl': 'https://www.qobuz.com/search?q=%band%+%release%',
+      'searchUrl': 'https://www.qobuz.com/gb-en/search/albums/%band% %release%',
+      'spaceEncode': ' ',
+      'bar': 1},
+  {   'name': 'Qobuz (US)',
+      'icon': 'data:image/png;base64,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',
+      'searchUrl': 'https://www.qobuz.com/us-en/search/albums/%band% %release%',
+      'spaceEncode': ' ',
       'bar': 1},
   {   'name': 'RYM',
       'icon': 'data:image/png;base64,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',
@@ -1272,6 +1287,26 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+//==============================================================================
+//    Warning for Chrome/Chromium users shown 3 times per version
+//==============================================================================
+
+// Note: Chrome bug with requests + Violenmonkey may be banned soon
+async function scoutWarning() {
+if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || navigator.userAgent.toLowerCase().indexOf('chromium') > -1) {
+    const warn_count = await GM.getValue("Discogs_Scout_warning_count", 0);
+    const warn_ver   = await GM.getValue("Discogs_Scout_warning_ver", "none");
+    if (warn_count < 3 && warn_ver !== GM.info.script.version) {
+      console.log("Discogs Scout (Warning): Bug detected: Chrome/Chromium! The script works slower and may soon stop working at all. Install Firefox to fix!");
+      GM.notification("Bug detected: Chrome/Chromium! \nThe script works slower and may soon \nstop working at all. \nInstall Firefox to fix!", "Discogs Scout (Warning)");
+      GM.setValue("Discogs_Scout_warning_count", warn_count +1);
+    } else if (warn_ver !== GM.info.script.version) {
+        GM.setValue("Discogs_Scout_warning_ver", GM.info.script.version);
+        GM.setValue("Discogs_Scout_warning_count", 0);
+    }
+  }
+}
+
 
 //============================================================================//
 //================================  MAIN  ====================================//
@@ -1506,7 +1541,7 @@ GM_config.init({
       // Iframe position.
       this.frame.style.top    = '50px';
       this.frame.style.left   = 'auto';
-      this.frame.style.right  = '150px';
+      this.frame.style.right  = '20px';
       this.frame.style.height = '90%';
       this.frame.style.width  = '450px';
 
@@ -1725,3 +1760,5 @@ if (document.readyState !== 'loading') {
       document.addEventListener('DOMContentLoaded', startDiscogsScout);
     }
 }
+
+scoutWarning();
