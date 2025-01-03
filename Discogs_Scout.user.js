@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      3.1
+// @version      3.1.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -62,6 +62,9 @@
 //==============================================================================
 //                         Version History:
 //==============================================================================
+
+3.1.1   -    Removed: LeakedAlbums
+             Update: InternetArchive moved to the icon sites.
 
 3.1     -    Adjusted the settings position to be more compatible with the mobile browsers.
              Warning for Chrome/Chromium users shown 3 times per version
@@ -281,6 +284,10 @@ var icon_sites = [
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABMlBMVEUAAABFi///STpP/37/vwX/////////////////////////////////////////6eery///XE7///////9V/4D////////////////////////E2v//wLvw//X/rKTo/+7/UUP/TDvJ/9eJ/6j////+/fz/8/L/4Yj/3n7/1ln/0Ef/xRyjxv//u7VXlv//opv/h37/enD/bF/////A/9H///+1/8hr/5Nl/49c/4j////0+P/o8f//9vX/9+D/997g7P/2//j/0c3/0Mz/siL/xL97rP/0//dkn///mRb/lnL/m5P/lo3/kYj/fiL/c2f/Y1bY/+P/2TNJmv/S/97Q/928/9ev/8VOs/+3/6ee/7iP/61//6F2/5r8/y6P//LC/0pS/5RY/77////////5+/9A6TfbAAAAZHRSTlMA9Oqo++j2myLz+M+XJQn8+uzIxamKh1hVLwv89/X17+vr3L0N/v79/fz8+/n39fTx8O7l2NLSsrCsB/7+/v7+/fn5+fn49/f29fTz8vLx7+3l5OPh4NLOysfGwLm2tbGwpaAOaYKM8gAAAZNJREFUOMt9k9d6wjAMhd3ssiFhlg3d7FKge++99w7v/wq1lGFC+PgvgqMj58hCJoxyXI6IkiRG5HiZuPHLk7rNpOwfkgNRj+7AEw04ti/rLrwK05MihoLZZrhQCDezQXwVk/Z+EeUGZ9PAFFEx/fH76Tw3QP4AXYw6orDOck4u0CWGBh7YzyGterVab9HFuXkWMJHBH79/vasje+Ez3UQm5A/6cwr61YwV3mAdS5E4/dkSLjkuDLqLBDrMCsJJIa2Pwkci9LkgCML+9MgElUCTFmnCvBmZYExBs4hEnwJlzp0Qoq/SuIQKJIyzCIGFXeSto8htqwbVOuanVhxMCEHCOhwTG7UpfPN874jpazWqHxuNKkOrX3jK+46l9w+xBKPV6JFZgYzujaHnvkCv9cHB+rsfeOTjqVjslHj+984oUVLsgWnzDn6eK/bAkIAX1vfUhaE94sitEkTBoc28Mr2Ug8iSMjT2mfZbV9N6pQ6VQU8SG8U75uIggZjHKUsxw5+hOC6vTyFuUgmfCtdf9SVSLPoPxFrAszCo93cAAAAASUVORK5CYII=',
       'searchUrl': 'https://www.google.com/search?q="%band%"+"%release%"',
       'bar': 1},
+  {   'name': 'InternetArchive',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoBAMAAAB+0KVeAAAAGFBMVEUBAQH+/v6xsbH5+flycnIkJCTPz8+YmJgcORQtAAAAkElEQVQoz+3RsQrCMBDG8Uuou1+/gGuLfYEjPkAzuToIroq+/zPYq9ZgIE66+YdLwm/MyZc6XoeSThdEcDhkWe0jIqEgbgs7qsKiXWep5xTIrZ8IgoDqNBlJTM2n0rBa2kmDURqOksKCfRCvnXh0sm1f2BrM0/+xihvxLDEF+2Qbe37IoVhxBSsp3nogCvxNd8fgHTocf1QUAAAAAElFTkSuQmCC',
+      'searchUrl': 'https://archive.org/details/audio_music?query=%band%+%release%',
+      'bar': 1},
   {   'name': 'Juno',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAALVBMVEUAAABvpecwgt2r0PRGjeBCi9+ozfE4hd02iOSLtOlhn+k1hN0vgdz///8nftvYoGGGAAAAB3RSTlMA4plb4uJb9GWAzwAAAFhJREFUCNdjYGAwWl6lzAAEjB3bqzsEgIyIciBoAQq0gxgVAgwW5WDQzKBRXl5zvLy8iWF1efnLeeXluxiAAnNvAoXgDLgUXDFcO8JABg+oFQhLGZLAzgAAp7o0US8mEgIAAAAASUVORK5CYII=',
       'searchUrl': 'https://www.juno.co.uk/search/?q[all][]=%band%+%release%&hide_forthcoming=0',
@@ -423,23 +430,11 @@ var public_sites = [
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /search yielded no results/,
       'bar': 2},
-  {   'name': 'InternetArchive',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoBAMAAAB+0KVeAAAAGFBMVEUBAQH+/v6xsbH5+flycnIkJCTPz8+YmJgcORQtAAAAkElEQVQoz+3RsQrCMBDG8Uuou1+/gGuLfYEjPkAzuToIroq+/zPYq9ZgIE66+YdLwm/MyZc6XoeSThdEcDhkWe0jIqEgbgs7qsKiXWep5xTIrZ8IgoDqNBlJTM2n0rBa2kmDURqOksKCfRCvnXh0sm1f2BrM0/+xihvxLDEF+2Qbe37IoVhxBSsp3nogCvxNd8fgHTocf1QUAAAAAElFTkSuQmCC',
-      'searchUrl': 'https://archive.org/details/audio_music?query=%band%+%release%',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': /No results matched/,
-      'bar': 2},
   {   'name': 'Knaben',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAQMAAAD58POIAAAABlBMVEUAAAACAgJ6224PAAAAAXRSTlMAQObYZgAAAm5JREFUSMfF1L2O1DAQB/BERkqHKenMgyD5zc4+XUHJKxnxIu5oXfqkEPOfD0+8i6hxcbf5JfZMZmZ3+/f68gzl6XpfINJnd0McWO3I89oNWtUbBIFgkBhKtCOGQLIjnuEQyGOCF3i9LIjAbhAFHMCiNvxx5w24N67DAEk+Q952QDfALYAHZIFGcAL2IoB/DtA2VwUyQ2gbjBaCKoTOcPIL9lC3KJG7QZLsG79xj3Ufg6EqFIcUCQpDiwWVKgSkgQCFkUQmRNRhQgRkFKY/AMp2LpDeAEsZa+J2rOAJssIAxHdAueElNUC9gXZZIjsDZdZXyMGecAzU9mpQUJ0DYXUHwUluEwLo1C6BpIAm2g4AAmjUQ6Buu0YNE5xGjQJlOzRqmuA16hDIW7g0SEtIEaC9xTwyYK9GxS0Ba4vCvjYOgKhlhReLiuUZNKqBRpVADKM/AhI0cATyrgbbi19gJwi6xSDhUFuApPNjMB4gMVw3RIbxF+Q7j0vATlAo9iYKVcAbtAX2BYJBv+EEWKrR4FrAjV8GSeCn5m7waqny+W5sBp7gwAxY7grRcj8A/tyCAR5uvtPWZp1roVF3uoIDYG4B9xMR2++6o4ux6G+evm9NyCkaxFEH+zAoQ1K2PH5cOjcz97dToMxp+EbgF/je5dA6Jyo0PlvhGFcisM546YBj+GzfQva+twmnFDtUPszWbw6c9Op9Ds283RX2CU0Hz02oNFsrlChFPCbkIGX2en3NzgSFk55d8+qAmVc+ANw7KWDmg6h3F0MTLvIzBdZmZf3BcJ3BkcdKeekc0fZAnz9qt75SjvTh03avD9t/W38ALE8zQ0sutboAAAAASUVORK5CYII=',
       'searchUrl': 'https://knaben.eu/search/?cat=Audio&q=%band%+%release%&fast=0',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': />Total hits : 0</,
-      'bar': 2},
-  {   'name': 'LeakedAlbums',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJ1BMVEUAAABSYntKXXqouaaUqs5Lo8VKXXoIu/+bWbYuzHHjGFr+xRv/aQetGhbhAAAABnRSTlMAB/kHIhCYosJtAAAALklEQVQI12OAA7Y0MEgAMdTADDjgnLW8es+JtgRKGQwsDsHGgoICcCvADDVkuwBy1CydEKnqbAAAAABJRU5ErkJggg==',
-      'searchUrl': 'https://leakedalbums.org/?do=search&subaction=search&story=%band%+%release%',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': /yielded no result/,
       'bar': 2},
   {   'name': 'Lossless-music',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAgCAMAAAAynjhNAAACWFBMVEUAAADNrXv/bwA1mpx4xVudV7I0kpmkSqqMyT7/cQCKV6r0zUZ8wynK5VujO6T/bwA5dcPJ5lvc3EY2lZn7bwPN5FrD22CdVrFVo9P/bgD/bgC43leaWLL/bwD06yD/bwDz7h7/bwDz7xyeVrFEiM70z0dZsOE1ccNZr+Z4wy7/awAzkpkzjJnI5E/0z0bD5F40kZpIjdKuSKqoPqW1WJo/fMdSxbusTa2oWqG94mI2mpny4DB4wCzN5lH0zUdQxL3z6SSJyDA2ccE5nKB4wiv0zUdOhsTqzjvNjHI2nprGy2bz3TZ3wSu5nX7D1VJGk4vccCM2m5k3cMBaxbP0zUd4wSs/f8qrQae+4nJwcYu/ezHz7B+pUbB2iWlKuLRSnsO+4mHNsC3/bgBLk4imU682nJrz1T6qWpX/cAA4csKM2PSBqGbJ5U70zUdcp7qtS630zkXuuBX3cQahOKH1zEdJj9GOy0GwRany7iBWxbilOKI2c8Izk5qaWbKrT63/bgDP5lT07h+64mTP51fzzEj/cAA3ccJLltj/bwBarOI1mprI5EldsOh4wCtQm9f3z0inO6c1db//agD/bwA0lJo1l5o1mZr03zR4wSulU7D0zkf05ivP51f02js6d8Y3ccGhVbH06SdKktWnTa6qS62nQqc2m5p7wipDh86dV7KmSqurRKnH5V3z7CRareRXp+FRnttNl9dHjdFBgss/gMo+fMioUa+lPaTE5F7L5lr01j5Wpt9Tot1Pm9lGitCkRqm+4mHz0UXz1EDz4jL04y82nJrL5VGBxSlDgChoAAAAk3RSTlMAAvIcBvO5Dw8GBfPv6+rq6OPh3tvTz768vKynopqJbGZeUVBFQiYkHhsTEQr++vf18fHx7uzs7Oro5uTk4t/d3NrZ1tTTzMvKx8XFxcTDwMC8uri3tLGxsK2sq6enpqWlpKSjoJ2Zk5CNioqJiYiIiIWDgH57end3dm5tbWpqYVtbWVVVUE9OTEc/ODc1MyAaGBjWid+RAAAB7ElEQVQoz33PZVcbURCA4dlNQiAFihRvC5RSodTd3d3d3d3dHdsEwiZkSdgYgQiB4G5/i9nLySHc3cP79Zm59wxElpem0aTlgXK6a5WV1dVu91RGSZlzoVCIDCj6B1GswXDA/V6u2pWiWItJrtHK+KHosdvt3d2r9u9JiYtLTL30hQn/mn9j79olHntzc/zNA/OHzGZza11LT8+LaKLfNvRV9e9EjX+qBebvvfWjvtoZK/kzvreqwrTLs/SNDkjqTykSZzmNxwHyeb6tYsC67GRJxI1fE+sWbnYajWo4RpY3vRx/a/SprGHkuTCJx5+tZ4HqzoPYUSZvT6f5ty99m/T4dmSTNYfmf9729HX7AO7z+HX9Z5pneX3+i/8BihdIPIPmOd52f2AmADxSZl9Hp22xDuB1KnKO7PEOf8DWhesbVySZrK9oLuoM2BpcJ0C99cLRJPlhP22oweWg0usNay4/pvl5Q5cr2JRAuNxxl9LcHa5gY5PlNhTqie9WRWBZJtuIaBFKAaKQ0QevhwdislnukAVR+AEA8xYRL3c4Dv8pRMydwnHcaUEQtsxGRZf2cQAzXH0ymcPYhCNvCZJU76KSDckHz5/BRdItoCvAtXBsAcj6OMbZII+ZFtZMBibwKzGg3K8Mls34DhGNALrb3pNUk/1lAAAAAElFTkSuQmCC',
@@ -596,7 +591,7 @@ var private_sites = [
       'bar': 2},
   {   'name': 'HQMusic',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAeFBMVEUAAACwsLCsrKzBwsHr6uvx8fHy8vLs7OzCwsLm5ubs7O3t7u7u7u3u7u7o6ejn5+fp6eni4uLi4uO/v7/k5OTl5eTe3t3e3d7f39/f4N/V1NXZ2dna2tvb2tvW1tWxsbG3t7fQ0NDV1dTU1dXW1tbS0tK4uLj///+qPNcxAAAAAXRSTlMAQObYZgAAAAFiS0dEJy0PqCMAAAAHdElNRQfmDAEOMiHaArF+AAAAaElEQVQY063PSQ6AIAwFUMQZB1ScUXG+/xH1Y4h7YxdN+tI2LSG/hEXvIATZ0rXtuC7A8/wAQkPGGCCKk5QCODcjWaYhL8SzTJSVhroxHW2noZdSAoZxmABqXtYNsO/HqTCq3jvUp0cu0gcEZ2tTQRMAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMTItMDFUMTQ6NTA6MzMrMDA6MDAO8TmIAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTEyLTAxVDE0OjUwOjMzKzAwOjAwf6yBNAAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMi0xMi0wMVQxNDo1MDozMyswMDowMCi5oOsAAAAASUVORK5CYII=',
-      'searchUrl': 'http://hqmusic.info/torrents.php?searchstr=%band%+%release%',
+      'searchUrl': 'https://hqmusic.info/torrents.php?searchstr=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
       'matchRegex': /did not match anything/,
       'bar': 2},
