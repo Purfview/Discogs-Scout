@@ -1190,12 +1190,12 @@ async function performRelease() {
         band    = $('[id*=profile_title]').find('a').text().trim();
         release = $('[id*=profile_title]').children().last().text().trim();
       } else if ($('#master_schema').length > 0) { // the new version of the master page (beta)
-          band    = $('[class^=body]').find('h1>span>a.link_15cpV:first').text().trim();
+          band    = JSON.parse(document.getElementById('master_schema').textContent)['@graph'][0]['byArtist']['name'];
           release = JSON.parse(document.getElementById('master_schema').textContent)['@graph'][0]['name'];
       }
   } else if (Boolean(location.href.match('/release/'))) {
       if ($('#release_schema').length > 0) {
-        band    = $('[class^=body]').find('h1>span>a.link_15cpV:first').text().trim();
+        band    = JSON.parse(document.getElementById('release_schema').textContent)['releaseOf']['byArtist'][0]['name'];
         release = JSON.parse(document.getElementById('release_schema').textContent)['name'];
       }
   }
