@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      3.1.1
+// @version      4.0
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -62,6 +62,9 @@
 //==============================================================================
 //                         Version History:
 //==============================================================================
+
+4.0     -    Fixed: Release, Artist, Label, Collection, List pages.
+             Added: LzTr
 
 3.1.1   -    Removed: LeakedAlbums
              Update: InternetArchive moved to the icon sites.
@@ -350,7 +353,7 @@ var icon_sites = [
       'bar': 1},
   {   'name': 'TPB-Proxy',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA8BAMAAAAkp6FXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAkUExURQAAABkZGTMZAEwzM0xMM0xMTGZMM2ZMTGZmTH9mZn9/Zv///0CpG+oAAAGySURBVDjLxdXNitNgFMbxx2NlHHMThz8DfmRTBnfdSDeDuhFczc5LKINQ0M2Ay16CFyDSTYxgnT435yLph0lqVXA8q5D8kpf3Oe8h8pHS7YF5tzpgrH6V+yDoV/FHYOA55X8CkhSHQBBczOfzKUEMgPzoa2y7zoWrAXBir8K26/v2OvqgtN2AYnejC/gVKLaJHwB37VUD2qtuN3PiV00AOfGs06ybaHNo48oATvdAPRT16Bg4+SdAABkHQAYGKOsG9sDjunAFace6C74GUPjUFeTS99zdpgU8qvMpwNkzPveOfZ2QQgFIKUDL3x7evHMERE6OgLbzA/Xals1BUKmw7DdwAIx50HyBeDEIZhSWK0gUiwEApeUZ+WQq9cgKkbYMYa+nktiRT0jNAMvXKleLlsQ72+u3SCARnDRRq8n9AyhICSm4tMekZbuOpnPft6dt2bYwtmDk1XkGqBmJJmRZ0SwRIAUSF0tfKYjndkW+3LT7C6TEZbuFK4XiIeRkA74FZz+lMBUJ2h6YmuxkeHO+GW/ZdjXQrs1LLRj1GxH5freEigGwt8Rg5TFQ6bb/en8PfgCTTMM5Mqng0wAAAABJRU5ErkJggg==',
-      'searchUrl': 'https://tpb.one/search.php?q=%band%+%release%&cat=101,104',
+      'searchUrl': 'https://tpirbay.site/search/%band%+%release%/1/99/100',
       'bar': 1},
   {   'name': 'Wikipedia',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACABAMAAAAxEHz4AAAAGFBMVEUAAAD///8BAQFdXV3n5+csLCyPj4/CwsJBNwprAAAAAXRSTlMAQObYZgAAA39JREFUaN7tmc1ymzAUhds+QVRjs275W0Nm2jUe3Kzx5AVwm+5h2vcvFZa+XDJCxsrCC2uTOYH76d4jISnRB9s+qhXtwUTReLgeQffrCcSHEdRVLSABUiA+hKCubiQQkkI4QAU0EghIIRigglowgAqureEGACqw3QF3wB1wB9wBc8DmkfZ91LufZ/GtUyoy4rEcxW/e7AB8+krLRr23qhjpUtBSC3hYBGytyN8ZUFwI2PgzUJ9HyVuvO22Vio9GPCPGlpUAVNP81b9MmmbSP6b+tYqap//iz1k0B/2kqeU82Nn8p3bUPMXD3D4aRlW+nUhTbp2RJy3rSRx0MaZVo+oBiAheO8DTz0BHpAbAGlfIkr7YEIrbmNcAEAE6OpohmYfsdaIAyMxWTUkZrlErFgDAhE6a0OMablOPAOylizsrY0pjSAFgjnQxMlLbmwqzWwGQEZksKWEQmUYoAVAVVVNSrccjq3nLKAAyopQmlLOiYxQAYUIqS0pn477hFQDABf40STmIe5IEIEzIalnSk3EWau0CDEwlTHg5DyYzPFEuwJaphAnGWKCpExCbuUNJfCD0UboALEOYgK9U2bsBA/0xriJnLAAgTSBFTOhEkYUDgO8pJvB5kFPrAGBCjgm4yi96N4BliA5ll5V56gIcZM2R9QSduwEsQ9KEVDxu3QCWITmuiUiwWwSwDAGQK3VWLwP2RLDflUgscAA2IiI2MxGZegAREZwTEoUsFwD4nmPBVBKyXgAQk722AOcrk4wLgAk9s4KSIkbYAcC3FgvkJl0uAjChsJPiBRP4kpwAJp89V8SYcMICF4C867MFxWTk83lBLi4A0OW0JQ3aBL4kL4Aupy1pY3abrZYeADuaOY2R0cD8cAIwIeNoVelx5UtaBDB9enO0MibEGuMDYEKrf9Rmbmb6R+cFYEIxnSQYlkFb6QOwsiYcrSo9LJXmeQGYwNFq0EDD8wPY1jOxRWqeF4AJrCsxu/yFgD1/72ACX5IPQM69XNlSPwAT6BFgeRmAnAuAJOQHYEIJkIT8AHKuJbBYAYjpEWDrB0gT0pmr/RrAwLzjZLIGsDUBmFD4AdKEfOZquwqgjjIgwoILAcMs4JSpdYBtIvUhXwmIfkkdd44Xb+C/+6GAG7hjCQQE3zMFX5WFAsJv+wJTeIcr07AUgm99wy+uadcWQAuLp4r1+f8DlVKhz9lAdawAAAAASUVORK5CYII=',
@@ -637,6 +640,18 @@ var private_sites = [
       'loggedOutRegex': /Cloudflare|Ray ID|>Keep me logged in.</,
       'matchRegex': /Nothing found!/,
       'bar': 2},
+  {   'name': 'LzTr',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEUAAAD///8bGxtnZ2d3d3fs7Oz5+fnl5eX09PTc3Nw6OjqGhobR0dGXl5fCwsK1tbVIiewoAAAAAXRSTlMAQObYZgAAAaFJREFUKM9dkLtKA0EUhucRPIVLQEGY2WqXNNFKGyFTKRqHbC42kilcrNQlylpJFlQCNkriDVQk2UpJpZ2okXjFJ5AIFmIl2KfznMQg+MOyw8c/53wMM1XvV4Vzbp3iNxnkmA0w05RyzLqScuITCtiAiO+nSqJ14C9rmGLmNlD6qp3/IjNvgeKE3i8QD0VXA5RDb66oAa+Ip2JxA6BkeutZBLluoyS8dWr0MNGZkReeAYCAhhobug1cArQ2knXpCnKXxP6Aq12NYri/M7QrRgcCZEoe9kom42cJGKlMKo1gNS6HrnVebM9fSPlWYNGjyim3g6TwNrnFa9g4jo/HhFoTyuFDMXOL2fv+9EeonFAtVT8bZp229J/fBCVi0BfWma2McvgEDeE54r58hh5qIZ6ANuCDwzQ03Qh3UYwA57UCepxfAwHlWIOxaA49qq3MDr6YSorHj7M6i97xkXgCTREEA3KUTK1KLUiiW+hFXk6YPd2UFwmN6gvvaT0/ysy9w+/nFcAGuIaGLWZdNS/fFeRNDZQc4xjxGqAYwGwWH+h/fgDZPaNLX5dlmgAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://lztr.me/torrents.php?artistname=%band%&groupname=%release%&filter_cat[1]=1',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
+      'matchRegex': /did not match anything/,
+      'bar': 2},
+  {   'name': 'LzTr-Req',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEUAAAD///8bGxtnZ2d3d3fs7Oz5+fnl5eX09PTc3Nw6OjqGhobR0dGXl5fCwsK1tbVIiewoAAAAAXRSTlMAQObYZgAAAaFJREFUKM9dkLtKA0EUhucRPIVLQEGY2WqXNNFKGyFTKRqHbC42kilcrNQlylpJFlQCNkriDVQk2UpJpZ2okXjFJ5AIFmIl2KfznMQg+MOyw8c/53wMM1XvV4Vzbp3iNxnkmA0w05RyzLqScuITCtiAiO+nSqJ14C9rmGLmNlD6qp3/IjNvgeKE3i8QD0VXA5RDb66oAa+Ip2JxA6BkeutZBLluoyS8dWr0MNGZkReeAYCAhhobug1cArQ2knXpCnKXxP6Aq12NYri/M7QrRgcCZEoe9kom42cJGKlMKo1gNS6HrnVebM9fSPlWYNGjyim3g6TwNrnFa9g4jo/HhFoTyuFDMXOL2fv+9EeonFAtVT8bZp229J/fBCVi0BfWma2McvgEDeE54r58hh5qIZ6ANuCDwzQ03Qh3UYwA57UCepxfAwHlWIOxaA49qq3MDr6YSorHj7M6i97xkXgCTREEA3KUTK1KLUiiW+hFXk6YPd2UFwmN6gvvaT0/ysy9w+/nFcAGuIaGLWZdNS/fFeRNDZQc4xjxGqAYwGwWH+h/fgDZPaNLX5dlmgAAAABJRU5ErkJggg==',
+      'searchUrl': 'https://lztr.me/requests.php?submit=true&type=&search=%band%+%release%&tags=&show_filled=off&releases[]=1&releases[]=2&releases[]=3&releases[]=5&releases[]=7&releases[]=9&releases[]=11&releases[]=13&releases[]=15&releases[]=16&releases[]=21&formats[]=0&formats[]=1&formats[]=2&formats[]=3&formats[]=4&formats[]=5&formats[]=6&formats[]=7&bitrates[]=0&bitrates[]=1&bitrates[]=2&bitrates[]=3&bitrates[]=4&bitrates[]=5&bitrates[]=6&bitrates[]=7&bitrates[]=8&bitrates[]=9&bitrates[]=10&bitrates[]=11&bitrates[]=12&bitrates[]=13&bitrates[]=14&bitrates[]=15&media[]=0&media[]=1&media[]=2&media[]=3&media[]=4&media[]=5&media[]=6&media[]=7&media[]=8&media[]=9&media[]=10',
+      'loggedOutRegex': /Cloudflare|Ray ID|>Remember me</,
+      'matchRegex': /Nothing found!/,
+      'bar': 2},
   {   'name': 'RMT',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAgMAAAC+UIlYAAAADFBMVEX8/vwIBwhhYWKzs7OLFLOWAAAFMUlEQVRYw73WS+wLQRwH8O/uaP+WbuvQ0oSDQ0sjEg6td6K4EbHCrPXXUK+DcFhxRSYeB4lII5ZKHBohkSIaEgciJsRBOEikXkGEEMShV49guuuxs+3ogfge/vlv89nM7Mz8Zgb/MaMGAePvAR8AzPIg4A4AWnUA0K0BgDgYkJWDwNFB4PkgMAF/zCzkINJQgjSKEHmkBI8Qh8gMJTgBI5gyNTATADTllFnQDgEgrhroezgwz1I3QRYyIPf0T0C0PyKtAnWQRQKMyqnAEehlFzDjKvBAfGEV0ParQIYbzAJ0qhqpKW6J1QgnlClAoe6hpjOsVQ3liLyNpxpDTbW4R5sOnpoMj6xEf5BExwfpE0lFWXQXnQC5RxrrD3gAZqaJohcsAEMz4HQfetPAvHmiwouxmzZgoTcTUehWeNrctauMer+RQjFhWmKw6N6KmJneFDGUjD1MujiKScizXjCEuHbMGIaIyWLVfttgDBV0QDhQMxxEkoCJGO+6jy4wWaO9lavxUrfhPLU5zBvLo5N6DxrLu4TDo3SYE9eqAdPDoAptqWdprknts++anZozS/wWAQuoYzqv7Q6Qah53ktDDgFjQFlF6mtKW/7jZIWUtCspUxEGQ97wmATiik54ADEH0alqTZuwYTC7A7/GZNEMAuSzQpvR38ZsHblTCIL9tpgA2fmf1QgkYpysCOOFXNkpAX8QFcMOvWPKE1QDvR12Sb18AaBVH2j5ymE1XIQTI8KYQmIxRKFGpUXj7wg0ynRnhLiS/fRg/Wj6PGhplIdBsZMMADiYQGlnFUpE+xBBsGcRT0khyE0dkYBJpJMtaOXIUaDekJ4u492Sg75GeHFgRQBZIG95lWC9ApJ+2S0/XeKWDvIOJ+JXjEnjpVlqwPTYVv9IOg8TUtsVEWVgFfPu1yqRTsVDaUY4D9Vlzmo1+oDiL3CgXxLTGHfxsZVIY5EaKwngBxAw3tAbCCyIhprwDmDH++6UwKCUSfvVrQ0j0BTPOGUe77+qz0GTQre7/WekrOsaqThcAXysgVstfx6GMhLky2NOJZwMN0V9SkbewAKRgdCv4xYsUkJamG7cd+BEVWgUao4EhabpZOwCEUio64Y6O3g/dvA+mmgKsgsnF68KE8tT0wb0Speu86w/4KPJupwRmkgB8o9R+TVdzfTN1IrfFI8GG2qYidwBK5YuA7qb9PiDfBZgO700tcssZCoBBRSOoImNHQHxUAIgA2/S9Vn5VSwYnFwD+/jxbbNZJwymt5DKoH2Y+8HM3vzJWiV4gnroApsEP81YZLuRknKnzgCc/qo7aJibKIPdh5jyQ9cHcik8hyEYPNfNLy9jgQiQhBlwMbvRmTpwnXrURtEcpR0wGehkPRp13g1XjdYHZc9UqMd0NCsI/GOKQMxfGGnzx9wpdgC9IQ47ONLp1dgvktaUJ8OZTFZF8ABVpnnbKGl1D8zbvPZw9um02pSs46Do7wxBJSnczNkCHXTFhG5yxvRcl1DKi2cxaiGgs2+d+UMjcXIZ8Naiwez2g1L0i0WrpB3jRC1i2Gtv2tvRjMDs9IL6uxh8iOeMcFDFOu6QF7ZTy9q7vxHzxt1IPbiS8V7z/1AKwcUnK35FbvSB1ASJbbl3xt/kyFGnHH7z/AOhKEB+Rzn8+OF1TgtHF7GRta/E1UwEya0JO23F6uKUEZ8YUdH7svhLgRC1rov6qowQzatkScS5yJUiNqT/e83a3GuD+4ktXZw4zNXh2CFONphqgDZEY1BnnDyjUSQfbvzrT8W/zHc2Ya/iGIR/1AAAAAElFTkSuQmCC',
       'searchUrl': 'https://metal.iplay.ro/browse.php?search=%band%+%release%&tlt=50&incldead=2',
@@ -760,6 +775,7 @@ var sites = public_sites.concat(private_sites, other_sites, pre_databases);
   // https://www.discogs.com/master/2385727-Twice-Formula-Of-Love-OT3
   // https://www.discogs.com/master/1257041-For-King-Country-Crave
   // https://www.discogs.com/master/1787931-Baauer-Planets-Mad
+  // https://www.discogs.com/release/61732-Phosphotaze-Stu-Grant-Tone-Works
 
 async function replaceSearchUrlParams(site, band, release, mPOSTsearch) {
   var search_url = ('mPOST' in site && !mPOSTsearch) ? site['mPOST'] : site['searchUrl'];
@@ -1127,17 +1143,29 @@ async function performArtist() {
 
   // Wait for dynamic content to be loaded:
   await sleep(1000);
-  if($('.textWithCoversRow_3IhZ3').length == 0) {
+  if($('.textWithCoversRow_Xv0h3').length == 0) {
     await sleep(1000);
-    if($('.textWithCoversRow_3IhZ3').length == 0) {
+    if($('.textWithCoversRow_Xv0h3').length == 0) {
       await sleep(1000);
     }
   }
 
-  if($('.textWithCoversRow_3IhZ3').length !== 0) {
-    $('.textWithCoversRow_3IhZ3').each(function() {
-      const elem     = $(this);
-      const release  = $(this).find('.title_oY1q1>.link_1ctor').text();
+  // https://www.discogs.com/artist/34058-Sepultura
+  if($('.textWithCoversRow_Xv0h3').length !== 0) {
+    $('.textWithCoversRow_Xv0h3').each(function() {
+      const elem  = $(this);
+      let release = "";
+      if ($(this).find('.link_wXY7O[href*="/release/"]').length > 0) {
+        release = $(this).find('.link_wXY7O[href*="/release/"]:eq(1)').text().trim();
+      } else if ($(this).find('.link_wXY7O[href*="/master/"]').length > 0) {
+          release = $(this).find('.link_wXY7O[href*="/master/"]:eq(1)').text().trim();
+      }
+
+      if (band == "" || release == "") {
+        GM.notification("Artist page code error 2!", "Discogs Scout");
+        console.log("Discogs Scout: Artist page code error 2!");
+        Discogs_Scout__Generate_Not_Defined_Error_To_Stop_The_Script();
+      }
 
       let scout_tick = window.localStorage['_discogscout_tick'];
       if (!scout_tick) {
@@ -1149,7 +1177,7 @@ async function performArtist() {
       scout_tick = parseInt(scout_tick) + 1;
       window.localStorage['_discogscout_tick'] = scout_tick;
     });
-    startObserver2();
+    startObserver2(); // to load sites when Next button is pressed
   } else {
       GM.notification("Artist page code error or No releases!", "Discogs Scout");
       console.log("Discogs Scout: Artist page code error or No releases!");
@@ -1157,11 +1185,13 @@ async function performArtist() {
 }
 
 function startObserver2() {
-  console.log('Discogs Scout: Starting Observer2.');
-  if ($('.releasesPath_2MuQ7').length) {
+  if ($('.discographyGrid_LiaSb').length) {
+    console.log('Discogs Scout: Starting Observer2.');
     const obscfg = {childList: true};
     const obs = new MutationObserver(start_performArtist);
-    obs.observe($('.releasesPath_2MuQ7')[0], obscfg);
+    obs.observe($('.discographyGrid_LiaSb')[0], obscfg);
+  } else {
+      console.log('Discogs Scout: Observer2 Error.');
   }
 }
 
@@ -1190,13 +1220,23 @@ async function performRelease() {
         band    = $('[id*=profile_title]').find('a').text().trim();
         release = $('[id*=profile_title]').children().last().text().trim();
       } else if ($('#master_schema').length > 0) { // the new version of the master page (beta)
-          band    = JSON.parse(document.getElementById('master_schema').textContent)['@graph'][0]['byArtist']['name'];
+          band    = $('[class^=body]').find('h1>span>a.link_PKPcS:first').text().trim();
           release = JSON.parse(document.getElementById('master_schema').textContent)['@graph'][0]['name'];
       }
   } else if (Boolean(location.href.match('/release/'))) {
       if ($('#release_schema').length > 0) {
-        band    = JSON.parse(document.getElementById('release_schema').textContent)['releaseOf']['byArtist'][0]['name'];
+        band    = $('[class^=body]').find('h1>span>a.link_PKPcS:first').text().trim();
         release = JSON.parse(document.getElementById('release_schema').textContent)['name'];
+      }
+  }
+
+  // fallback to _schema if above "band" code fails
+  if (band == "") {
+      console.log("Discogs Scout: Fallback to _schema as 'band' failed.");
+      if ($('#master_schema').length > 0) {
+        band = JSON.parse(document.getElementById('master_schema').textContent)['@graph'][0]['byArtist']['name'];
+      } else if ($('#release_schema').length > 0) {
+          band = JSON.parse(document.getElementById('release_schema').textContent)['releaseOf']['byArtist'][0]['name'];
       }
   }
 
@@ -1209,7 +1249,7 @@ async function performRelease() {
 }
 
 //==============================================================================
-//    Label/Collection/Wantlist/List Page code
+//    Wantlist / MyWantList Page code
 //==============================================================================
 
 function performList() {
@@ -1218,27 +1258,14 @@ function performList() {
       const elem = $(this);
       let band = "";
       let release = "";
-      if (onLabelPage) {
-        // https://www.discogs.com/label/34268-Roadrunner-Records
-        band      = $(this).find('.artist>a').text().trim();
-        release   = $(this).find('.title>a' ).text().trim();
-      } else if (onWantlistPage || onCollectionPage) {
-          // https://www.discogs.com/wantlist?user=GPX
-          // https://www.discogs.com/user/GPX/collection
-          band = $(this).find('.release_title>a:eq(0)').text().trim();
-          if ($(this).find('.release_title>a[href*="/release/"]').length > 0) {
-            release = $(this).find('.release_title>a[href*="/release/"]:eq(0)').text().trim();
-          } else if ($(this).find('.release_title>a[href*="/master/"]').length > 0) {
-              release = $(this).find('.release_title>a[href*="/master/"]:eq(0)').text().trim();
-          }
-      } else if (onMyCollectionPage) {
-          // own collection page
-          band = $(this).find('.collection-card-title>a:eq(0)').text().trim();
-          if ($(this).find('.collection-card-title>a[href*="/release/"]').length > 0) {
-            release = $(this).find('.collection-card-title>a[href*="/release/"]:eq(0)').text().trim();
-          } else if ($(this).find('.collection-card-title>a[href*="/master/"]').length > 0) {
-              release = $(this).find('.collection-card-title>a[href*="/master/"]:eq(0)').text().trim();
-          }
+      if (onWantlistPage) {
+        // https://www.discogs.com/wantlist?user=GPX
+        band = $(this).find('.release_title>a:eq(0)').text().trim();
+        if ($(this).find('.release_title>a[href*="/release/"]').length > 0) {
+          release = $(this).find('.release_title>a[href*="/release/"]:eq(0)').text().trim();
+        } else if ($(this).find('.release_title>a[href*="/master/"]').length > 0) {
+            release = $(this).find('.release_title>a[href*="/master/"]:eq(0)').text().trim();
+        }
       } else if (onMyWantlistPage) {
           // own wantlist page
           // https://www.discogs.com/mywantlist
@@ -1248,16 +1275,11 @@ function performList() {
           } else if ($(this).find('.release_title_link>a[href*="/master/"]').length > 0) {
               release = $(this).find('.release_title_link>a[href*="/master/"]:eq(0)').text().trim();
           }
-      } else if (onListPage) {
-          // This won't work properly if " - " is in band's name or there are more than one artist in title:
-          const title  = $(this).find('.listitem_title>a:eq(0)').text().trim();
-          band     = title.replace(/ - .+/, '').trim();
-          release  = title.replace(/.+? - /, '').trim();
       }
 
       if (band == "" || release == "") {
-        GM.notification("List page code error 1!", "Discogs Scout");
-        console.log("Discogs Scout: List page code error 1!");
+        GM.notification("List page code error 2!", "Discogs Scout");
+        console.log("Discogs Scout: List page code error 2!");
         Discogs_Scout__Generate_Not_Defined_Error_To_Stop_The_Script();
       }
 
@@ -1272,11 +1294,86 @@ function performList() {
       window.localStorage['_discogscout_tick'] = scout_tick;
     });
   } else {
-      GM.notification("List page code error 2!", "Discogs Scout");
-      console.log("Discogs Scout: List page code error 2!");
+      GM.notification("List page code error 1!", "Discogs Scout");
+      console.log("Discogs Scout: List page code error 1!");
       return;
   }
 }
+
+//==============================================================================
+//    Label/Collection/List Page code
+//==============================================================================
+
+async function performList2() {
+  // Wait for dynamic content to be loaded:
+  await sleep(1000);
+  if($('.textWithCoversRow_Xv0h3').length == 0 && $('.MuiDataGrid-row').length == 0 && $('.listItem_TjYDb').length == 0) {
+    await sleep(1000);
+    if($('.textWithCoversRow_Xv0h3').length == 0 && $('.MuiDataGrid-row').length == 0 && $('.listItem_TjYDb').length == 0) {
+      await sleep(1000);
+    }
+  }
+
+  let list;
+  if($('.textWithCoversRow_Xv0h3').length !== 0) {
+    list = $('.textWithCoversRow_Xv0h3');
+  } else if ($('.MuiDataGrid-row').length !== 0) {
+      list = $('.MuiDataGrid-row');
+  } else if ($('.listItem_TjYDb').length !== 0) {
+      list = $('.listItem_TjYDb');
+  } else {
+      GM.notification("List page code error 3!", "Discogs Scout");
+      console.log("Discogs Scout: List page code error 3!");
+      return;
+  }
+
+  list.each(function() {
+    const elem = $(this);
+    let band = "";
+    let release = "";
+    if (onLabelPage) {
+      // https://www.discogs.com/label/34268-Roadrunner-Records
+      band      = $(this).find('.link_PKPcS:eq(1)').text().trim();
+      release   = $(this).find('.link_wXY7O:eq(2)').text().trim();
+    } else if (onCollectionPage) {
+        // https://www.discogs.com/user/GPX/collection
+        // And own collection page
+        band    = $(this).find('.link_wXY7O:eq(0)').text().trim();
+        release = $(this).find('.itemTitle_sGUZZ>.MuiTypography-root').text().trim();
+    } else if (onListPage) {
+        // https://www.discogs.com/lists/Djeac-Tekno-Prisoners-Mix/1238561
+        band      = $(this).find('.link_PKPcS:eq(1)').text().trim();
+        release   = $(this).find('._link_bcmpa_1:eq(0)').text().trim();
+    }
+
+    if (band == "" || release == "") {
+      GM.notification("List page code error 4!", "Discogs Scout");
+      console.log("Discogs Scout: List page code error 4!");
+      Discogs_Scout__Generate_Not_Defined_Error_To_Stop_The_Script();
+    }
+
+    let scout_tick = window.localStorage['_discogscout_tick'];
+    if (!scout_tick) {
+      scout_tick = 1;
+      window.localStorage['_discogscout_tick'] = scout_tick;
+    }
+
+    perform(elem, band, release, scout_tick);
+    scout_tick = parseInt(scout_tick) + 1;
+    window.localStorage['_discogscout_tick'] = scout_tick;
+  });
+
+  // Change height of some elem or otherwise some album-rows will be hidden on collection pages
+  if (onCollectionPage) {
+    const $div = $('.MuiDataGrid-virtualScrollerContent');
+    const divHeight = $div.height();
+    $div.height(divHeight * 2);
+  }
+}
+
+//==============================================================================
+//    Sleep
+//==============================================================================
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -1620,7 +1717,6 @@ const valid_states = [
 var onArtistPage       = false;
 var onReleasePage      = false;
 var onLabelPage        = false;
-var onMyCollectionPage = false;
 var onCollectionPage   = false;
 var onMyWantlistPage   = false;
 var onWantlistPage     = false;
@@ -1701,11 +1797,6 @@ function startDiscogsScout() {
         return;
       }
   }
-  //  Check if we are on the own collection page
-  if (onCollectionPage && $('.collection-row').length > 0) {
-    onMyCollectionPage = true;
-    onCollectionPage = false;
-  }
 
   if (onReleasePage) {
     console.log("Discogs Scout: Starting a release page.");
@@ -1716,13 +1807,10 @@ function startDiscogsScout() {
         performArtist();
       } else if (onLabelPage) {
           console.log("Discogs Scout: Starting a label page.");
-          performList();
-      } else if (onMyCollectionPage) {
-          console.log("Discogs Scout: Starting a mycollection page.");
-          performList();
+          performList2();
       } else if (onCollectionPage) {
           console.log("Discogs Scout: Starting a collection page.");
-          performList();
+          performList2();
       } else if (onWantlistPage) {
           console.log("Discogs Scout: Starting a wantlist page.");
           performList();
@@ -1731,7 +1819,7 @@ function startDiscogsScout() {
           performList();
       } else if (onListPage) {
           console.log("Discogs Scout: Starting a list page.");
-          performList();
+          performList2();
       } else {
           console.log("Discogs Scout: Not starting. [Report it if you think that it should start here!]");
       }
