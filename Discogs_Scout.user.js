@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 //
 // @name         Discogs Scout
-// @version      4.0
+// @version      4.0.1
 // @namespace    https://github.com/Purfview/Discogs-Scout
 // @description  Auto search for music on torrent, local drive, ddl, streaming, predb, and other sites. Adds links to Discogs pages from various sites.
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUBAAAAifwLExgFkP4NJTYQOFUQTHoRYZ0Kbr4Ol/4UgdMGft8acrIPiecWke4Znv7mtRJQAAAEFUlEQVRIx71US4wMURQ9KlXTHWye8utppJRpI8GiFN3Gt4xu4xcpdPuLpo0hhPaZ7sQnad8ZRIQxxiTiM8GEWOhIRCxEzPhEbIhPJCQiIWFHsLFx33uKNtqsxFm8uq/eeffce+vewn+GMi9Rl5hXbeAvmH/VtnTbsvuuLH59rc1+wH5a7HyzxTz0b7v2p8xcfpMxnbtp9Ou16IAhgfus75TsgdZV9fV15vLSeIc41HzjbMbSQqssu9vqlww5vwtMMBnhxpaq6wfzZOguoiiA9rHFZzdXVFj6ZSagJ6G5BYTJ46BmorHE0lPOWUGoILV4QYpWi7JCWNWYyrMN1Drk1vkV4kR36BjP42YSaBRv0/Aw+Lj6iAWz9cJL+YHmVn7XwLOfCmdz3XTueWzG4NuEYZpVdS4WeuUsCSRTJ7fyEpZCwPdtpzWgEn5PwxfBGAdVDYz1lSF9KGcVbxWoI7wkj6mb6DGMVPYZoWgoP6r7hWojBIyGROoWCRtQ2ii/9FKijbnDQwESEFCobMoOi2r33m6Khiz99G0sqBXBuTLGMQbU+a9OGgglKNGZl+MobzjBG89/RRC69Te4BIn8hKlMb6etdkbshveRSmLNSIahuPzVJkkIc9ucp9JTFXa8KrlX3HkisxzF7W3B3eRJPQ5ajtiMiAS5Ln9Mi9O9wf5KAUdAWGPbLeAhZQVhZ440VxtTVjlU1FI5QKsM0VF1grA7B7VpMH06InQNyrY0y0SV6j0Pfha5ibo7BoYTIepoNSURX7UJ1AjCxhF8KEo1Pf8Ok4gQizmhmrEvM0ngoCQcw2TGenU5+TBr7gzyvO/rWRa86XofIzUKXS29aXhanR+zqKrK1bWsRvZGpZyJ3tSITfMzcx6u9DGylUMz7C1Xm8/R0XlZScpddfHi5QqkdF4oRdvuLIlzo0VOjeyLeQbQ1ivlSreiQ9SktPa73jccfMwfuP2L4EtLc1G7eJS1UjNceic6HlKcbkoNhd+oYoY8mxSmlc/mVs9ZW6V403Ct2oFqLGwWwXdNql8gYQxzo3yWQhebG+5tfb1I/Dti5fCf+TlazhYiTAGisTkmp2IlMlFsKGjC56AANTnhlN6uuHJupSKUvJF2iD0wzGurzFHcDLq2J7snC/8gPUKU9metsVzNpdRPwIbpyXUogM8qI/9GyesN0cZlrgvlbka7hUKkepaJkJZUtofIGNrfWY/f4LejWwq2hzd1+4zfsZnZLkr2yM3QN9pEpwOhxNJzmFVB7udgcMDd34KOmG7lMJ3tghbB3NLFEfyJWW8wiIVD/jA2ngikixAUB0NZ8MDiMB7UtKM4hjAWJIJp4i/wMcbyI1H8XKZChKP4O1SLBTffQifIs+BDozNCigUr0Rmm6ePRKbTWWvxrfAfEou1mueFddwAAAABJRU5ErkJggg==
@@ -62,6 +62,9 @@
 //==============================================================================
 //                         Version History:
 //==============================================================================
+
+4.0.1   -    Updated: Knaben, RlsBB, BitSearch, 1Trance
+             Moved to the icon sites: 1Gabba, 1Techno
 
 4.0     -    Fixed: Release, Artist, Label, Collection, List pages.
              Added: LzTr
@@ -228,6 +231,14 @@ Album/EP/Single name.
 */
 
 var icon_sites = [
+  {   'name': '1Gabba',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAulBMVEV0WUj////6+vqKhIN1Wkn08vLVzsqxopiVgXR3XUxxVkVnTj9iSjxZQjU+LCUzJiU6Jx8rGhXp5ePTysW9ubmzrq2TjIugjoKNd2lyammKc2RdVFRYTk1GOztOOC0oFxT8/Pz49vbu7e3t7Ozn5ubj4eHl4N3g2tfKx8fOxb/Hvba0sLDBtq65q6O1pp2hnJymloukk4ifjIF7dHSSfXBtZWSEbV5iWlpTR0VsUkNTPTFIMik1KilDLibbc1XpAAAAyUlEQVQ4y7WR1xKCMBREE6JIb1IEEey99/r/v6VjdMwMueaJfd0zOye5qJxUjorCb9QkWk5lT8I4NIvtVvba+JvWpQhM8C/VnLM/ZICZxTGTGCDmKCSYyV0rAhHTD1yOwiYgh5RQYHVDnBg6QnMKnAwEZEQBG+pV+pK+CwF7OhA8IKBGgZ0JAfXPITTozNV3L+XQQIMOjB2BQpgJFJr6fwVsCxR6rkDBtyBApgC5QofoCBwVLHBcvMquT1Lwm9bx2XIyA8HRUCl5AhutCp6fvI66AAAAAElFTkSuQmCC',
+      'searchUrl': 'https://1gabba.pw/frontpage?title=%release%',
+      'bar': 1},
+  {   'name': '1Techno',
+      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAUVBMVEUAqlQAqlUA/wAAqlX////P799pzZsDq1ft+fNly5jb8+ef379byJJwz5/5/fuy5ctVxo5IwoU6vnzL7dzB6tag38CU27iE1a1Xxo8VsWMPrl/oZoaWAAAAA3RSTlPmewHs1fhnAAAAeklEQVQ4y+2TywqAIBBFx8xeWqm9+/8PzUEjCVKIFi46qwtzFjMwFzIC9BEgGRAahACEBZyHSUjY2pExJqlgPsoJpey7HClom/sIJ2iTg8J+CYpzPmHsuEGfO/SzWKyAlBir+xX1L3wkrI1BWAHjkOBPvq8WRMsbrf8B/wsPKn5qb10AAAAASUVORK5CYII=',
+      'searchUrl': 'https://1techno.org/?t=%release%',
+      'bar': 1},
   {   'name': 'AllMusic',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAMAAADwSaEZAAAAPFBMVEUAKDkAERgAIS8AGSQkqeD+/v4djr0SZokFOE4LTmqVnJ6tt7tSXmI5RUrs7u7d3+B3gIQSIynL0dQnNDr+weAdAAADeklEQVRYw+2V2ZLbIBBFaRE2Sd7//19Db7qmZGdGmTxMpeaCJGjo081SdvjGqly1aD3u6o3vrfotED96ram2Imr1i6DQyi8olzax8ajUp2XDgNeO0zgBR+1xR9Kb9PEFym7V2jZ2sSmfxk01Wx7c7X15mhlr7/w5G9RealbUFFCAy9UMxhzQGsheyKtoQmMtSjMQEgALgfQlrMbOhrPCryY0n81vtMEAtSiL9YTRh2mWNbJwLNLBxjjLUtOY3rFx3TYUUMYo2SLrQC266aVOTiy60LF4XgDyq+lUVWVHU9kSzbalcMZr7MlMZ3EHqk8LzeMxA6VNbVSe6Cy9bfzn0/IzLUsbieDhN1SQmC7Hz0iXj9TKwFAMvgBYCOFyG5tZbBaDR8+xuZtW2TnKDiCfinVis97AQkX44lh3Chlj4P4hs4YtE1fssOMxLXwEQ8i4teqynLaFP23B9HnYtJ3EnNKis/8B7JrS/FUYWss9bIgI2IEDiDi7+/mG88W0F7CI3hiyueua0tXPt725GswJkT/7SxutWWJvLyld2FRkF8UjcxMcc+D3gJNpMhrZuX8eqWu1iyeOFhIyKztpU6SEZpYszjPD7pEzYwBPb5I0OGoNxoKlalCxh1xjDOfEOkXpil1/gtgBjsgMVt2OJhaOFeM1iZbIw1Fq84AgceHMBhzP7BKr6pJUD+16Yk3gz6XD9AtalNRKdK3JNLtF/1DgwEWChC0aoLxroN0ddnaL/tVFOBhOYA7eguifsHqe0qbrE6tgeeo/GQx8t2ajUaQFsEvvGiuTulk1hThq0nf2ld50hYpcybLOWAs0wJAv0xRGs+79areDBJaVgfmAvVan1e5rF/ZmX6IAFvQRjEomIr2wd7Ktmzm1QnQYRr3SRY+RyG7brXN6PQJzGhBEZ8WyOR7MjLj44hbqmu3ikgy9g72KRFrswq4M87bQ9i5iDP3xigHNK85YpW/fhXY02nyCMIEjsOhmF38WMUxvR/TiKO8Ha4DjheyHDMIGWnJ4aQnwHlGkF3avh6cG1JYZEnkqUtf0UjPp8IsSZGSHwo7vdL6R4wYPhfEX1RVP6Y2u2xRUffQABqsRF6zKdLXT1XF4jZlBSO2R/CqYYFrpjcIYBZotDXrSXW33IXj0lsP2up2xSqwT2b7Qe9hpVj2GCGZc38L+Rj+wH9j/AvsN1ksy9BiB4ZUAAAAASUVORK5CYII=',
       'searchUrl': 'https://www.allmusic.com/search/albums/"%release%"',
@@ -366,22 +377,9 @@ var icon_sites = [
 ];
 
 var public_sites = [
-  {   'name': '1Gabba',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAulBMVEV0WUj////6+vqKhIN1Wkn08vLVzsqxopiVgXR3XUxxVkVnTj9iSjxZQjU+LCUzJiU6Jx8rGhXp5ePTysW9ubmzrq2TjIugjoKNd2lyammKc2RdVFRYTk1GOztOOC0oFxT8/Pz49vbu7e3t7Ozn5ubj4eHl4N3g2tfKx8fOxb/Hvba0sLDBtq65q6O1pp2hnJymloukk4ifjIF7dHSSfXBtZWSEbV5iWlpTR0VsUkNTPTFIMik1KilDLibbc1XpAAAAyUlEQVQ4y7WR1xKCMBREE6JIb1IEEey99/r/v6VjdMwMueaJfd0zOye5qJxUjorCb9QkWk5lT8I4NIvtVvba+JvWpQhM8C/VnLM/ZICZxTGTGCDmKCSYyV0rAhHTD1yOwiYgh5RQYHVDnBg6QnMKnAwEZEQBG+pV+pK+CwF7OhA8IKBGgZ0JAfXPITTozNV3L+XQQIMOjB2BQpgJFJr6fwVsCxR6rkDBtyBApgC5QofoCBwVLHBcvMquT1Lwm9bx2XIyA8HRUCl5AhutCp6fvI66AAAAAElFTkSuQmCC',
-      'searchUrl': 'https://1gabba.pw/frontpage?title=%band%+-+%release%',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': /class="node/,
-      'positiveMatch': true,
-      'bar': 2},
-  {   'name': '1Techno',
-      'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAUVBMVEUAqlQAqlUA/wAAqlX////P799pzZsDq1ft+fNly5jb8+ef379byJJwz5/5/fuy5ctVxo5IwoU6vnzL7dzB6tag38CU27iE1a1Xxo8VsWMPrl/oZoaWAAAAA3RSTlPmewHs1fhnAAAAeklEQVQ4y+2TywqAIBBFx8xeWqm9+/8PzUEjCVKIFi46qwtzFjMwFzIC9BEgGRAahACEBZyHSUjY2pExJqlgPsoJpey7HClom/sIJ2iTg8J+CYpzPmHsuEGfO/SzWKyAlBir+xX1L3wkrI1BWAHjkOBPvq8WRMsbrf8B/wsPKn5qb10AAAAASUVORK5CYII=',
-      'searchUrl': 'https://1techno.org/?t=%band%+-+%release%',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': /find any results/,
-      'bar': 2},
   {   'name': '1Trance',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABL1BMVEUAAAAAzWQExWEAzWQDymMHpVQC6HIC0GYHpVQAzWQC6HIHpVQAzWQC6HIC6HIAzWQGqlYB320HpVQB428CvF0C6HIHpVQAzWQC6HIHpVQHpVQC6HIAzmQAzWQHpVQHpVQC6HIAzmQAzWQC6HIHpVQAzmQAzWQHplQC6HIC53EAz2QHpVQC5nAA0WYC6HIAzWQHpVQB324C6HIC6HIHpVQAzWQB2moHpVQC6nMHolIB22sAzWQC6HIC6HIC6HIHpFQAzWQAzWQC6HIC6HIHpVQHpVQC6HIHpVQHpVQAzWQHpVQAzWQHpVQC6HIHpVQGqVYBxWEFsFgHpVQDvV0B22sAzWQC6HIEtVoHpVQAzWQAzWQC6HIC6HIHpVQAzWQC6HIAzWQHpVQC6HIHpVQAzWTZU+3UAAAAYnRSTlMA+AREAnN0B/r89fLx76aMVBISDQn79+3q6uPi4dfXzMvAt6+vrZqajIqBfnNuaF9eWlFIPjkvJB8YF+nd2dPRy8rEwMC6uLa0paKhjoKCgHVva2ppaV5cSUhCPzYtLCUkDYPAI4AAAAE1SURBVDjL3ZJVkoRAEAULRmAcGHd3d1l3d/dd4P5n2Oi3AhNzg8mfrujMjvppWkKs/MIw7/s9AkJ7RECpm73QitgxyL6wBcO4IJq8XHGqCD6LDg7BIK1phv/IqyqC4aaus4DvxDRT8JJREfDthI7gq+7SjIC/j6uMRqDm1hFMj0XNCPxnHvi17olDZ2SlXWjxEH7iDcLv3GahuaOrFLzrXGH+dRs66G0m4d2+iyh8rMOz9b1VeE+1FoZPXJZD8OkB1tt/1scbJQ5+6+ZAA4Ux9nud8JluDtpRfNiADp0qBFSQnzzjPefz2+Cj1wIZgbMik4UFK3cCIUg9EhlBpCUQguSTlRDsvZEpWO9bCUHunYgFYnlKpmB/hNPiLs0IgcsWIBPVGYFh8/dakuZ/Ef93/g+0hHwDCu1apon9qdkAAAAASUVORK5CYII=',
-      'searchUrl': 'https://1trance.org/?t=%band%+-+%release%',
+      'searchUrl': 'https://1trance.org/?t=%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
       'matchRegex': /find any results/,
       'bar': 2},
@@ -393,9 +391,9 @@ var public_sites = [
       'bar': 2},
   {   'name': 'BitSearch',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAALVBMVEUAAABpMeY+LupRL+hbMef///9HL+lxT+uLcu+nlPO/sPbTyfn18v7j3fvs6P0FKMLaAAAAAXRSTlMAQObYZgAAArdJREFUSMd9lc9rE1EQxx9paX6csrCgVbzswbtsIPHW1cUkSg+iDzVJezBlbT0lTUhbT61Ni70FpFqhij9BpHgy+Bd48OhB8C6l/0Zn3subeZts+80lyXzzeTNvdiYirlwuJ87RgaO0cUY445A2k+Lp0GG1kuJh4LquE2jHswl+CHLOYYQo+HUAL61BLN4PlSgOuhhLoBAaRPIhHT/UgiRdY7hgAXzfQriMYIBPCI4zIgNxQqy3Jy90ykfp+Du5sEWMvNC66RPispTyESPoBELsS9DWWJozTd8ggl9o+EOEWWXoRYSoSNQDrkQZoogQVW2IJ5GOIkJowl2+zjymEDGiPE64BIbdyEJ8QcNDBxDc0luRhbiChrrVVJWjhQiO0NFnhBBZDDMieLE3lCeB3Y6r2sHXWR4udgnREtOeNpTe9E1HbiOC6kx5CrF8LBvbIwTU8rUNCGNQiB0szyDuwIefTEDEkurSS98vfv8HWcD7RttxVbs+eohYlqh6v3woG90wHMKHDy46kICIp5L1GR4LajoSQMkGRMwCARH6iIWDPYBvQxnooyNQlGTp728o5FjKxa6aESQoBJZZw+sswiNcxTJxRpjgrcB3r0xHduCicAZgEPNixtOIjW+vTUdK+HOUIqQ9LW5qYb8W0qS2RGZkME1dW3srf5hJVe32bMTSoQR1eNiFMjBiHuM1HnY0rNqIodRdNYgyGFIW4ol+7H1CzOFceIxYUYb7vC9wcLImTk29x/tC7cLHjNCE/7QvAoFKMULn8Ike8KrecR5JVdHo0L4Y7TmPEfNYJc+I0HrOjuaRrPdozCpmj1qI5nqPx4w26So77Em9Joym2WBP6pwg3UhCFAQrnYRgQHIWRWErM4kY+2ucGkeYA0i7ccR1wWIHI0qJf72MaIlEZUeQijhb7webAxHTKcR6cpKOAKdYAAAAAElFTkSuQmCC',
-      'searchUrl': 'https://bitsearch.to/search?q=%band%+%release%&category=7&subcat=',
+      'searchUrl': 'https://bitsearch.to/search?q=%band%+%release%',
       'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': /Found <b>0</,
+      'matchRegex': /No results found/,
       'bar': 2},
   {   'name': 'BoxAlbums',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAM1BMVEUAAAAAAAAYGBg9PT0LCwsGBgZJSUlDQ0NNTU01NTUsLCwiIiIREREJCQk6OjovLy8pKSnz5zBhAAAAAXRSTlMAQObYZgAAAE1JREFUGNONjDkOgDAMBNdHYnIB/38tR2EXiCgjTbFTLJah12BLQB4ISgPq6TMzJb5tXnaqUuiw+adpbOEh0lU8MCk/fi7+Q1bAOha5AKoaASjwhVhRAAAAAElFTkSuQmCC',
@@ -435,9 +433,10 @@ var public_sites = [
       'bar': 2},
   {   'name': 'Knaben',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAQMAAAD58POIAAAABlBMVEUAAAACAgJ6224PAAAAAXRSTlMAQObYZgAAAm5JREFUSMfF1L2O1DAQB/BERkqHKenMgyD5zc4+XUHJKxnxIu5oXfqkEPOfD0+8i6hxcbf5JfZMZmZ3+/f68gzl6XpfINJnd0McWO3I89oNWtUbBIFgkBhKtCOGQLIjnuEQyGOCF3i9LIjAbhAFHMCiNvxx5w24N67DAEk+Q952QDfALYAHZIFGcAL2IoB/DtA2VwUyQ2gbjBaCKoTOcPIL9lC3KJG7QZLsG79xj3Ufg6EqFIcUCQpDiwWVKgSkgQCFkUQmRNRhQgRkFKY/AMp2LpDeAEsZa+J2rOAJssIAxHdAueElNUC9gXZZIjsDZdZXyMGecAzU9mpQUJ0DYXUHwUluEwLo1C6BpIAm2g4AAmjUQ6Buu0YNE5xGjQJlOzRqmuA16hDIW7g0SEtIEaC9xTwyYK9GxS0Ba4vCvjYOgKhlhReLiuUZNKqBRpVADKM/AhI0cATyrgbbi19gJwi6xSDhUFuApPNjMB4gMVw3RIbxF+Q7j0vATlAo9iYKVcAbtAX2BYJBv+EEWKrR4FrAjV8GSeCn5m7waqny+W5sBp7gwAxY7grRcj8A/tyCAR5uvtPWZp1roVF3uoIDYG4B9xMR2++6o4ux6G+evm9NyCkaxFEH+zAoQ1K2PH5cOjcz97dToMxp+EbgF/je5dA6Jyo0PlvhGFcisM546YBj+GzfQva+twmnFDtUPszWbw6c9Op9Ds283RX2CU0Hz02oNFsrlChFPCbkIGX2en3NzgSFk55d8+qAmVc+ANw7KWDmg6h3F0MTLvIzBdZmZf3BcJ3BkcdKeekc0fZAnz9qt75SjvTh03avD9t/W38ALE8zQ0sutboAAAAASUVORK5CYII=',
-      'searchUrl': 'https://knaben.eu/search/?cat=Audio&q=%band%+%release%&fast=0',
-      'loggedOutRegex': /Cloudflare|Ray ID/,
-      'matchRegex': />Total hits : 0</,
+      'searchUrl': 'https://knaben.org/search/?cat=Audio&q=%band%+%release%&fast=0',
+      'loggedOutRegex': /Cloudflare|Ray ID|please wait/,
+      'matchRegex': />Total hits: 0</,
+      'rateLimit': 525,
       'bar': 2},
   {   'name': 'Lossless-music',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAgCAMAAAAynjhNAAACWFBMVEUAAADNrXv/bwA1mpx4xVudV7I0kpmkSqqMyT7/cQCKV6r0zUZ8wynK5VujO6T/bwA5dcPJ5lvc3EY2lZn7bwPN5FrD22CdVrFVo9P/bgD/bgC43leaWLL/bwD06yD/bwDz7h7/bwDz7xyeVrFEiM70z0dZsOE1ccNZr+Z4wy7/awAzkpkzjJnI5E/0z0bD5F40kZpIjdKuSKqoPqW1WJo/fMdSxbusTa2oWqG94mI2mpny4DB4wCzN5lH0zUdQxL3z6SSJyDA2ccE5nKB4wiv0zUdOhsTqzjvNjHI2nprGy2bz3TZ3wSu5nX7D1VJGk4vccCM2m5k3cMBaxbP0zUd4wSs/f8qrQae+4nJwcYu/ezHz7B+pUbB2iWlKuLRSnsO+4mHNsC3/bgBLk4imU682nJrz1T6qWpX/cAA4csKM2PSBqGbJ5U70zUdcp7qtS630zkXuuBX3cQahOKH1zEdJj9GOy0GwRany7iBWxbilOKI2c8Izk5qaWbKrT63/bgDP5lT07h+64mTP51fzzEj/cAA3ccJLltj/bwBarOI1mprI5EldsOh4wCtQm9f3z0inO6c1db//agD/bwA0lJo1l5o1mZr03zR4wSulU7D0zkf05ivP51f02js6d8Y3ccGhVbH06SdKktWnTa6qS62nQqc2m5p7wipDh86dV7KmSqurRKnH5V3z7CRareRXp+FRnttNl9dHjdFBgss/gMo+fMioUa+lPaTE5F7L5lr01j5Wpt9Tot1Pm9lGitCkRqm+4mHz0UXz1EDz4jL04y82nJrL5VGBxSlDgChoAAAAk3RSTlMAAvIcBvO5Dw8GBfPv6+rq6OPh3tvTz768vKynopqJbGZeUVBFQiYkHhsTEQr++vf18fHx7uzs7Oro5uTk4t/d3NrZ1tTTzMvKx8XFxcTDwMC8uri3tLGxsK2sq6enpqWlpKSjoJ2Zk5CNioqJiYiIiIWDgH57end3dm5tbWpqYVtbWVVVUE9OTEc/ODc1MyAaGBjWid+RAAAB7ElEQVQoz33PZVcbURCA4dlNQiAFihRvC5RSodTd3d3d3d3dHdsEwiZkSdgYgQiB4G5/i9nLySHc3cP79Zm59wxElpem0aTlgXK6a5WV1dVu91RGSZlzoVCIDCj6B1GswXDA/V6u2pWiWItJrtHK+KHosdvt3d2r9u9JiYtLTL30hQn/mn9j79olHntzc/zNA/OHzGZza11LT8+LaKLfNvRV9e9EjX+qBebvvfWjvtoZK/kzvreqwrTLs/SNDkjqTykSZzmNxwHyeb6tYsC67GRJxI1fE+sWbnYajWo4RpY3vRx/a/SprGHkuTCJx5+tZ4HqzoPYUSZvT6f5ty99m/T4dmSTNYfmf9729HX7AO7z+HX9Z5pneX3+i/8BihdIPIPmOd52f2AmADxSZl9Hp22xDuB1KnKO7PEOf8DWhesbVySZrK9oLuoM2BpcJ0C99cLRJPlhP22oweWg0usNay4/pvl5Q5cr2JRAuNxxl9LcHa5gY5PlNhTqie9WRWBZJtuIaBFKAaKQ0QevhwdislnukAVR+AEA8xYRL3c4Dv8pRMydwnHcaUEQtsxGRZf2cQAzXH0ymcPYhCNvCZJU76KSDckHz5/BRdItoCvAtXBsAcj6OMbZII+ZFtZMBibwKzGg3K8Mls34DhGNALrb3pNUk/1lAAAAAElFTkSuQmCC',
@@ -506,7 +505,7 @@ var public_sites = [
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAAgMAAADXB5lNAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAJUExURf///+KWHP7+/g40ZLEAAAABdFJOUwBA5thmAAAAxUlEQVQ4y83Uu3EFIQyFYRKX4L4c+CdQCfSjEhToVOlAsHcWrh+JxyZivmEEOrvQGrfR2ssd3trrHd5PYBt/BSZJSZck+QJFQUJjKHotQXIaJjCBnK6gYQldjhxGTkCBHOwALRg/hX6suIoO33eZEBdQB/N10pzABIvqJanm+iwzvEBKQJJYoCjQqjHOPGLPI/fmcjbnE0zPgV+GfA79i8/wSepjtW8z5OuHUYVsuiL0ijCg0WvyCPmfXI8Dvr/Zx2OwPxcfV/CgxyM3gh4AAAAASUVORK5CYII=',
       'searchUrl': 'https://search.rlsbb.cc/?s=%band%+%release%&category[]=music',
       'loggedOutRegex': /Ray ID|security check to access/,
-      'matchRegex': /Not Found!/,
+      'matchRegex': /Not Found!|No data found/,
       'bar': 2},
   {   'name': 'RockBox',
       'icon': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAulBMVEVJREONlY2ss6o0JSNudHB6gnu8wrbV3NNxQDSdp5yCi4TavZvGlXBZLyfHycG8qpnq7+deZGDJ0sq3iW9pVU789uaLWE/15MXp1byieGT65Nb33Lzyzq3oxaaXnZbIooezloyvcFXdqIX68M+ciIGWZ1To2M3lvqnptZTas4zd5tzVzLfky7PMubCQa2jZ1cPv27KgloWLTj3p5NjKr5/FlIrMr4PkzqOdWUK+zcLfy8bo4b6FPjBwfIQdnM3sAAAC5klEQVQ4yzWS6YKcIBCEARFQFO/7HMfRcee+Z7Ob93+tNJuEv3xUF1WNAhRgjC3CQn9inuftylMYct8njCv1yQ1EgwBblkW4f4L7sein0g95kpDQ5/zDDzVgYkKUulw8794V6eZxP8Bzy2KEEEYAoBiTMLzExbOpqrpPr6mnSEjIJ2NMAUApOFA4Lpyhqdbr9VwIb1IfHx8+nMRHpk0xsTBy/wFZfh/7w+0GBOccAGqDR4oMN426fd30Xf61O+x2Hvf/A2ARI4TcOOrGout6j+1OufQOSpvkXCu0OECGEW8K4RZzV3innWzm/kJI2zKFTEgJFIAwRCrEphjzMpdN3l8UVyFnMMImBBmaEMXbFX1ZlllVz3dPhRDpJwIB1gIAhNikYuNNSdkXEaQFgFZoW6IBA8UgIcSjP/bjMRVHcKmT4AhTkxCKtAIc9zGiGHmH4/HwS91ufpL8BUyE4hgIV2w246/p13yYp+l0Usr3ETZtC75hAEHb/pimj7LcN1VZ3jgPWagQtk1IIgAAIr/3Y3qNhjqrmiw5McUYgS5AAmYYgWnaUPkYizSSs6zWJ1gfpdDPNhCQCKhpmpjxi2u4V2dbZV9fu92No0C3xVgbIASEFTKqI32vlipbJ9OOAGACQHRhgQ0RIBfyXq2i5ZwlSTJ5P3WTT/0RYCEhcU0L57ksi8xLTSCKMSbMwlhHATk4TvRosvPSybrOs6REtv4naS2IO07F9zsatnW2zvayqaWUeYNsG2aEaoSN2aTX98pZZgDKfL8/n+Wz3iMbrINFeD9GKzC3bZoqzzPd+fn5rCrograYGm6cRg/HcYZaK++n/JasX04kJbIptU14f7xuIriHyV3UVbm3X6/zrogcZNKABrAOQqQwYGjmZYAYa3nO8j2gnY7P1lvvuuL7++0Mw7LdbpvXK8vlvYjmGgXQpa1XQZ/rCqZst4t8nbOzdFZOPSCD/v5NAfjRuOqQHThP+ZJdsRq2xh887k8KMBj8EgAAAABJRU5ErkJggg==',
