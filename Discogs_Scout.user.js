@@ -192,7 +192,7 @@ The string which appears if the searchUrl *doesn't* return a result.
 #  'positiveMatch' (optional):
 Changes the test to return true if the searchUrl *does* return a result that matches matchRegex.
 
-#  'SpaceEncode' (optional):
+#  'spaceEncode' (optional):
 Changes the character used to encode spaces in band/release names. Default is '+'.
 
 #  'replaceSpecials' (optional):
