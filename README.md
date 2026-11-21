@@ -28,7 +28,7 @@ Meanings of the color borders around the icons:
 - **Bugged browsers:** `Chrome` & `Chromium` based browsers (super slow & doesn't send proper requests)
 - **Safari:** It doesn't support sending cookies, so auto-search don't work with sites that require login.
 - **Recommended manager:** `Tampermonkey` [currently the only manager that supports all features]
-- 
+ 
 ## Versioning:
 Follows a bastardization of the [semver](http://semver.org/) standard:
 * Patch versions will not change behavior, only the URL/settings for trackers.
